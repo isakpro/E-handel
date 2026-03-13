@@ -2,11 +2,13 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ECommerce.Api.Repositories;
+using ECommerce.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Lägg till Controllers
-builder.Services.Controllers();
+builder.Services.AddControllers();
 
 // Beroendeinjektion (Dependency Injection) för våra tjänster
 // Vi använder Scoped eftersom de ska leva under ett HTTP-anrop.
