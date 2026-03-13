@@ -1,0 +1,33 @@
+@page "/orderhistory"
+@using ECommerce.Shared.DTOs
+@using ECommerce.Client.Components
+@attribute [Authorize] 
+@inject HttpClient Http
+
+<h3>Mina Tidigare Ordrar</h3>
+
+@if (orders == null)
+{
+    <p><em>Laddar din historik...</em></p>
+}
+else if (!orders.Any())
+{
+    <p>Du har inte gjort några beställningar ännu.</p>
+}
+else
+{
+    @foreach (var order in orders)
+    {
+        <OrderCard Order="order" />
+    }
+}
+
+@code {
+    private OrderDto[]? orders;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Hämtar orderhistorik från det skyddade API:et
+        orders = await Http.GetFromJsonAsync<OrderDto[]>("api/orders");
+    }
+}

@@ -1,0 +1,13 @@
+@using ECommerce.Shared.DTOs
+
+<tr>
+    <td>@Item.ProductName</td>
+    <td>@Item.Price kr</td>
+    <td>@Item.Quantity st</td>
+    <td>@(Item.Price * Item.Quantity) kr</td>
+</tr>
+
+@code {
+    [Parameter]
+    public CartItemDto Item { get; set; } = default!;
+}

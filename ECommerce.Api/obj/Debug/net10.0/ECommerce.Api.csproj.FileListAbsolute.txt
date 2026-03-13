@@ -1,0 +1,9 @@
+C:\Users\Gamer\source\repos\E-handel\ECommerce.Api\obj\Debug\net10.0\ECommerce.Api.csproj.AssemblyReference.cache
+C:\Users\Gamer\source\repos\E-handel\ECommerce.Api\obj\Debug\net10.0\rpswa.dswa.cache.json
+C:\Users\Gamer\source\repos\E-handel\ECommerce.Api\obj\Debug\net10.0\ECommerce.Api.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Gamer\source\repos\E-handel\ECommerce.Api\obj\Debug\net10.0\ECommerce.Api.AssemblyInfoInputs.cache
+C:\Users\Gamer\source\repos\E-handel\ECommerce.Api\obj\Debug\net10.0\ECommerce.Api.AssemblyInfo.cs
+C:\Users\Gamer\source\repos\E-handel\ECommerce.Api\obj\Debug\net10.0\ECommerce.Api.csproj.CoreCompileInputs.cache
+C:\Users\Gamer\source\repos\E-handel\ECommerce.Api\obj\Debug\net10.0\ECommerce.Api.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Gamer\source\repos\E-handel\ECommerce.Api\obj\Debug\net10.0\ECommerce.Api.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Gamer\source\repos\E-handel\ECommerce.Api\obj\Debug\net10.0\ECommerce.Api.sourcelink.json

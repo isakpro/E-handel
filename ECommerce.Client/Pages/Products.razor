@@ -1,0 +1,31 @@
+@page "/products"
+@using ECommerce.Shared.DTOs
+@using ECommerce.Client.Components
+@inject HttpClient Http
+
+<h3>Vårt Sortiment</h3>
+
+@if (products == null)
+{
+    <p><em>Laddar produkter...</em></p>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var product in products)
+        {
+            <div class="col-md-4 col-sm-6">
+                <ProductCard Product="product" />
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private ProductDto[]? products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await Http.GetFromJsonAsync<ProductDto[]>("api/products");
+    }
+}

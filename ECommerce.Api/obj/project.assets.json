@@ -36,6 +36,16 @@
             "related": ".pdb;.xml"
           }
         }
+      },
+      "ECommerce.Shared/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/ECommerce.Shared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ECommerce.Shared.dll": {}
+        }
       }
     }
   },
@@ -75,10 +85,16 @@
         "microsoft.openapi.2.0.0.nupkg.sha512",
         "microsoft.openapi.nuspec"
       ]
+    },
+    "ECommerce.Shared/1.0.0": {
+      "type": "project",
+      "path": "../ECommerce.Shared/ECommerce.Shared.csproj",
+      "msbuildProject": "../ECommerce.Shared/ECommerce.Shared.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net10.0": [
+      "ECommerce.Shared >= 1.0.0",
       "Microsoft.AspNetCore.OpenApi >= 10.0.1"
     ]
   },
@@ -114,7 +130,11 @@
       "frameworks": {
         "net10.0": {
           "targetAlias": "net10.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Gamer\\source\\repos\\E-handel\\ECommerce.Shared\\ECommerce.Shared.csproj": {
+              "projectPath": "C:\\Users\\Gamer\\source\\repos\\E-handel\\ECommerce.Shared\\ECommerce.Shared.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
