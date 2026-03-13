@@ -36,20 +36,31 @@
 
     private async Task HandleLogin()
     {
-        var response = await Http.PostAsJsonAsync("api/auth/login", loginRequest);
-        if (response.IsSuccessStatusCode)
+        try
         {
-            var authResult = await response.Content.ReadFromJsonAsync<AuthResponse>();
-            if (authResult != null && !string.IsNullOrEmpty(authResult.Token))
+            errorMessage = ""; // Nollställ gamla felmeddelanden
+            var response = await Http.PostAsJsonAsync("api/auth/login", loginRequest);
+            
+            if (response.IsSuccessStatusCode)
             {
-                // Berätta för Blazor att vi är inloggade
-                await ((CustomAuthStateProvider)AuthStateProvider).MarkUserAsAuthenticated(authResult.Token);
-                NavManager.NavigateTo("/"); // Gå till startsidan
+                var authResult = await response.Content.ReadFromJsonAsync<AuthResponse>();
+                if (authResult != null && !string.IsNullOrEmpty(authResult.Token))
+                {
+                    // Berätta för Blazor att vi är inloggade
+                    await ((CustomAuthStateProvider)AuthStateProvider).MarkUserAsAuthenticated(authResult.Token);
+                    NavManager.NavigateTo("/"); // Gå till startsidan
+                }
+            }
+            else
+            {
+                errorMessage = "Felaktig e-post eller lösenord.";
             }
         }
-        else
+        catch (Exception ex)
         {
-            errorMessage = "Felaktig e-post eller lösenord.";
+            // Fångar upp ifall API:et är nere eller porten är fel!
+            errorMessage = "Kunde inte ansluta till servern. Är du säker på att API:et är igång? (Kolla porten i Program.cs).";
+            Console.WriteLine(ex.Message); // Loggar den tekniska detaljen till F12-konsolen
         }
     }
 }
