@@ -5,7 +5,7 @@ var e=!1;const t=async()=>WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,
   "mainAssemblyName": "ECommerce.Client",
   "applicationEnvironment": "Development",
   "resources": {
-    "hash": "sha256-UjF3uCe1pOmakFNAGl6hUJS7Z+pVn9s1OKywY7ZsK80=",
+    "hash": "sha256-35+x/jRWY+m5uk0htDmgtoPOXNz/vtdd543tILxBalE=",
     "jsModuleNative": [
       {
         "name": "dotnet.native.cs8mcre4gh.js"
@@ -1044,25 +1044,25 @@ var e=!1;const t=async()=>WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,
       },
       {
         "virtualPath": "ECommerce.Shared.wasm",
-        "name": "ECommerce.Shared.u6r5ulck34.wasm",
-        "integrity": "sha256-5irJ1S9fVB81Mo2VMZ6hwCW2ukHjt2J8OJQHi0hRZqc="
+        "name": "ECommerce.Shared.qpaprecra5.wasm",
+        "integrity": "sha256-gooRYPntfHCrDsNc5pLAUgvt5qb+2GcSXjvYhfqjTZE="
       },
       {
         "virtualPath": "ECommerce.Client.wasm",
-        "name": "ECommerce.Client.btzxm906yb.wasm",
-        "integrity": "sha256-j01v0gsVCeBp32aPii0qlG0Ngo16rG7FxCZsX8h1Ejo="
+        "name": "ECommerce.Client.x8jkuaf1g2.wasm",
+        "integrity": "sha256-cRRy+8qTyw5tLId5wjHNLLGd0eaP6UCayxDZMKRMQAw="
       }
     ],
     "pdb": [
       {
         "virtualPath": "ECommerce.Shared.pdb",
-        "name": "ECommerce.Shared.6nk8tojyaz.pdb",
-        "integrity": "sha256-gmelM7BBe98yLFx0tKzHO/3D0c6SgUsy/Lqb27h30fo="
+        "name": "ECommerce.Shared.52x908gb7f.pdb",
+        "integrity": "sha256-YxAjWAiQzaPnrwmyfQSNoA8eQ1jFSGbIz4v6fJtWDqk="
       },
       {
         "virtualPath": "ECommerce.Client.pdb",
-        "name": "ECommerce.Client.4w58mucf3r.pdb",
-        "integrity": "sha256-1F1CSoRfCA0K/CVqKyTNnFDa0F5Ne1i1E4Pk7BHGwxQ="
+        "name": "ECommerce.Client.x3hgmoot1k.pdb",
+        "integrity": "sha256-nbC2tRpeYZF8YLOTRClmmjNhoRXWvK9iVesD8dvhi8Y="
       }
     ],
     "libraryInitializers": [
