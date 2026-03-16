@@ -1,0 +1,66 @@
+@page "/login"
+@using ECommerce.Shared.DTOs
+@using ECommerce.Client.Services
+@inject HttpClient Http
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager NavManager
+
+<h3>Logga in</h3>
+
+<EditForm Model="loginRequest" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    
+    <div class="mb-3">
+        <label>E-post</label>
+        <InputText @bind-Value="loginRequest.Email" class="form-control" />
+        <ValidationMessage For="@(() => loginRequest.Email)" />
+    </div>
+
+    <div class="mb-3">
+        <label>Lösenord</label>
+        <InputText @bind-Value="loginRequest.Password" type="password" class="form-control" />
+        <ValidationMessage For="@(() => loginRequest.Password)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Logga in</button>
+</EditForm>
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger mt-3">@errorMessage</div>
+}
+
+@code {
+    private LoginRequest loginRequest = new();
+    private string errorMessage = "";
+
+    private async Task HandleLogin()
+    {
+        try
+        {
+            errorMessage = ""; // Nollställ gamla felmeddelanden
+            var response = await Http.PostAsJsonAsync("api/auth/login", loginRequest);
+            
+            if (response.IsSuccessStatusCode)
+            {
+                var authResult = await response.Content.ReadFromJsonAsync<AuthResponse>();
+                if (authResult != null && !string.IsNullOrEmpty(authResult.Token))
+                {
+                    // Berätta för Blazor att vi är inloggade
+                    await ((CustomAuthStateProvider)AuthStateProvider).MarkUserAsAuthenticated(authResult.Token);
+                    NavManager.NavigateTo("/"); // Gå till startsidan
+                }
+            }
+            else
+            {
+                errorMessage = "Felaktig e-post eller lösenord.";
+            }
+        }
+        catch (Exception ex)
+        {
+            // Fångar upp ifall API:et är nere eller porten är fel!
+            errorMessage = "Kunde inte ansluta till servern. Är du säker på att API:et är igång? (Kolla porten i Program.cs).";
+            Console.WriteLine(ex.Message); // Loggar den tekniska detaljen till F12-konsolen
+        }
+    }
+}

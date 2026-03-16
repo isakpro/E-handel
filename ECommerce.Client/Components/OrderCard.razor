@@ -1,0 +1,21 @@
+@using ECommerce.Shared.DTOs
+
+<div class="card mb-3 border-info">
+    <div class="card-header bg-info text-white">
+        Order #@Order.OrderId - @Order.OrderDate.ToString("yyyy-MM-dd HH:mm")
+    </div>
+    <div class="card-body">
+        <ul>
+            @foreach(var item in Order.Items)
+            {
+                <li>@item.Quantity x @item.ProductName</li>
+            }
+        </ul>
+        <h5 class="text-end mt-3">Totalt: @Order.TotalAmount kr</h5>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public OrderDto Order { get; set; } = default!;
+}

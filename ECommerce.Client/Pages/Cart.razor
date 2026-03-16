@@ -1,0 +1,73 @@
+@page "/cart"
+@using ECommerce.Client.Services
+@using ECommerce.Client.Components
+@using ECommerce.Shared.DTOs
+@inject CartService CartService
+@inject HttpClient Http
+@inject NavigationManager NavManager
+@implements IDisposable
+
+<h3>Din Kundvagn</h3>
+
+@if (!CartService.GetCartItems().Any())
+{
+    <p>Din kundvagn är tom.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr><th>Produkt</th><th>Pris</th><th>Antal</th><th>Totalt</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var item in CartService.GetCartItems())
+            {
+                <CartItemRow Item="item" />
+            }
+        </tbody>
+    </table>
+    
+    <h4 class="text-end">Totalsumma: @CartService.GetTotal() kr</h4>
+
+    <AuthorizeView>
+        <Authorized>
+            <div class="text-end mt-3">
+                <button class="btn btn-success btn-lg" @onclick="Checkout">Slutför köp</button>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <div class="alert alert-warning text-end mt-3">
+                Du måste <a href="/login">logga in</a> för att slutföra köpet.
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+}
+
+@code {
+    protected override void OnInitialized()
+    {
+        CartService.OnChange += StateHasChanged; // Lyssna på ändringar i vagnen
+    }
+
+    public void Dispose()
+    {
+        CartService.OnChange -= StateHasChanged; // Undvik minnesläckor
+    }
+
+    private async Task Checkout()
+    {
+        var orderDto = new OrderDto
+        {
+            Items = CartService.GetCartItems().ToList(),
+            TotalAmount = CartService.GetTotal(),
+            OrderDate = DateTime.Now
+        };
+
+        var response = await Http.PostAsJsonAsync("api/orders", orderDto);
+        if (response.IsSuccessStatusCode)
+        {
+            CartService.ClearCart();
+            NavManager.NavigateTo("/orderhistory");
+        }
+    }
+}
