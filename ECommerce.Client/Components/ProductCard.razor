@@ -3,14 +3,19 @@
 @inject CartService CartService
 @inject NavigationManager Nav
 
-<div class="card h-100 shadow-sm" style="cursor:pointer" @onclick="GoToDetail">
-    <div class="card-body text-center">
-        <h5 class="card-title">@Product.Name</h5>
-        <p class="card-text text-muted">@Product.Description</p>
-        <h4 class="text-primary">@Product.Price kr</h4>
+<div class="product-card" @onclick="GoToDetail">
+    <div class="product-image-placeholder">
+        <i class="bi bi-image fs-1"></i>
     </div>
-    <div class="card-footer bg-white border-top-0 text-center">
-        <button class="btn btn-outline-success w-100" @onclick="AddToCart" @onclick:stopPropagation="true">
+    <div class="product-card-body">
+        <h5 class="product-title">@Product.Name</h5>
+        <p class="product-description">@Product.Description</p>
+        <div class="product-price-row">
+            <span class="product-price">@Product.Price kr</span>
+        </div>
+    </div>
+    <div class="product-card-footer">
+        <button class="btn btn-add-cart" @onclick="AddToCart" @onclick:stopPropagation="true">
             <i class="bi bi-cart-plus"></i> Lägg i varukorg
         </button>
     </div>

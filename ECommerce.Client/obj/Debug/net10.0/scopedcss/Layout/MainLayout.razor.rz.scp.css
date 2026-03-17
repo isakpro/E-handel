@@ -75,3 +75,48 @@ main[b-ozipo0nu47] {
         padding-right: 1.5rem !important;
     }
 }
+
+.page-container[b-ozipo0nu47] {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-header[b-ozipo0nu47] {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.main-content[b-ozipo0nu47] {
+    flex: 1;
+    margin-top: 0;
+}
+
+.main-footer[b-ozipo0nu47] {
+    background-color: #212529;
+    color: white;
+    margin-top: 4rem;
+}
+
+.main-footer h5[b-ozipo0nu47] {
+    color: white;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.main-footer a[b-ozipo0nu47] {
+    color: #adb5bd;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.main-footer a:hover[b-ozipo0nu47] {
+    color: white;
+}
+
+.main-footer ul li[b-ozipo0nu47] {
+    margin-bottom: 0.5rem;
+}

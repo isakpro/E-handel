@@ -1,7 +1,109 @@
 ﻿@page "/"
+@using ECommerce.Shared.DTOs
+@using ECommerce.Client.Components
+@inject HttpClient Http
+@inject NavigationManager Nav
 
-<PageTitle>Home</PageTitle>
+<PageTitle>SportShop - Din sportklädesbutik</PageTitle>
 
-<h1>Helloo, world!</h1>
+<section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1 class="hero-title">Välkommen till SportShop</h1>
+        <p class="hero-subtitle">Premium sportkläder för den aktiva livsstilen</p>
+        <button class="btn btn-hero" @onclick="NavigateToProducts">
+            Shoppa Nu <i class="bi bi-arrow-right ms-2"></i>
+        </button>
+    </div>
+</section>
 
-Welcome to your new app.
+<section class="featured-section py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Populära Produkter</h2>
+            <p class="section-subtitle">Upptäck våra mest sålda träningskläder</p>
+        </div>
+
+        @if (featuredProducts == null)
+        {
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Laddar...</span>
+                </div>
+            </div>
+        }
+        else if (featuredProducts.Length == 0)
+        {
+            <div class="text-center py-5">
+                <p class="text-muted">Inga produkter tillgängliga just nu.</p>
+            </div>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var product in featuredProducts)
+                {
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <ProductCard Product="product" />
+                    </div>
+                }
+            </div>
+        }
+
+        <div class="text-center mt-5">
+            <button class="btn btn-outline-primary btn-lg" @onclick="NavigateToProducts">
+                Se alla produkter <i class="bi bi-arrow-right ms-2"></i>
+            </button>
+        </div>
+    </div>
+</section>
+
+<section class="features-section py-5 bg-light">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 mb-4">
+                <div class="feature-box">
+                    <i class="bi bi-truck fs-1 text-primary mb-3"></i>
+                    <h4>Snabb Leverans</h4>
+                    <p class="text-muted">Fri frakt över 500 kr</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-box">
+                    <i class="bi bi-shield-check fs-1 text-primary mb-3"></i>
+                    <h4>Säker Betalning</h4>
+                    <p class="text-muted">100% säkra transaktioner</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-box">
+                    <i class="bi bi-arrow-repeat fs-1 text-primary mb-3"></i>
+                    <h4>Enkla Returer</h4>
+                    <p class="text-muted">30 dagars öppet köp</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    private ProductDto[]? featuredProducts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var allProducts = await Http.GetFromJsonAsync<ProductDto[]>("api/products");
+            featuredProducts = allProducts?.Take(4).ToArray() ?? Array.Empty<ProductDto>();
+        }
+        catch
+        {
+            featuredProducts = Array.Empty<ProductDto>();
+        }
+    }
+
+    private void NavigateToProducts()
+    {
+        Nav.NavigateTo("/products");
+    }
+}

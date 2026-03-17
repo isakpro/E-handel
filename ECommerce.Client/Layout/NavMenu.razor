@@ -1,64 +1,83 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">E-handel</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@implements IDisposable
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
+    <div class="container">
+        <NavLink class="navbar-brand" href="">
+            <strong class="brand-logo">SPORTSHOP</strong>
+        </NavLink>
+        
+        <button class="navbar-toggler" type="button" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
+
+        <div class="@NavMenuCssClass navbar-collapse">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                        Hem
+                    </NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="products">
+                        Produkter
+                    </NavLink>
+                </li>
+                
+                <AuthorizeView>
+                    <Authorized>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="orders">
+                                Mina Ordrar
+                            </NavLink>
+                        </li>
+                    </Authorized>
+                </AuthorizeView>
+
+                <li class="nav-item">
+                    <NavLink class="nav-link position-relative" href="cart">
+                        <i class="bi bi-cart3 fs-5"></i>
+                        @if (CartItemCount > 0)
+                        {
+                            <span class="cart-badge">@CartItemCount</span>
+                        }
+                    </NavLink>
+                </li>
+
+                <AuthorizeView>
+                    <Authorized>
+                        <li class="nav-item">
+                            <button class="btn btn-outline-danger ms-2" @onclick="HandleLogout">
+                                <i class="bi bi-box-arrow-right"></i> Logga ut
+                            </button>
+                        </li>
+                    </Authorized>
+                    <NotAuthorized>
+                        <li class="nav-item">
+                            <NavLink class="btn btn-primary ms-2" href="login">
+                                <i class="bi bi-person-fill"></i> Logga in
+                            </NavLink>
+                        </li>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </ul>
+        </div>
     </div>
-</div>
-
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Hem
-            </NavLink>
-        </div>
-        
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="products">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Produkter
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="cart">
-                <span class="bi bi-cart-nav-menu" aria-hidden="true"></span> Kundvagn
-            </NavLink>
-        </div>
-
-        @* Visas enbart om användaren har en giltig JWT-token *@
-        <AuthorizeView>
-            <Authorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="orders">
-                        <span class="bi bi-receipt-nav-menu" aria-hidden="true"></span> Mina Ordrar
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">
-                    <a class="nav-link" style="cursor: pointer;" @onclick="HandleLogout">
-                        <span class="bi bi-box-arrow-right-nav-menu" aria-hidden="true"></span> Logga ut
-                    </a>
-                </div>
-            </Authorized>
-            <NotAuthorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="login">
-                        <span class="bi bi-person-nav-menu" aria-hidden="true"></span> Logga in
-                    </NavLink>
-                </div>
-            </NotAuthorized>
-        </AuthorizeView>
-
-    </nav>
-</div>
+</nav>
 
 @code {
     private bool collapseNavMenu = true;
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : "show";
+    private int CartItemCount => CartService?.GetCartItemCount() ?? 0;
 
     [Inject] AuthenticationStateProvider AuthStateProvider { get; set; } = default!;
     [Inject] NavigationManager NavManager { get; set; } = default!;
+    [Inject] CartService CartService { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        CartService.OnChange += StateHasChanged;
+    }
 
     private void ToggleNavMenu()
     {
@@ -67,11 +86,13 @@
 
     private async Task HandleLogout()
     {
-        // Hämtar vår CustomAuthStateProvider och anropar utloggningsmetoden
         var customProvider = (CustomAuthStateProvider)AuthStateProvider;
         await customProvider.MarkUserAsLoggedOut();
-        
-        // Skicka användaren till startsidan när de loggat ut
         NavManager.NavigateTo("/");
+    }
+
+    public void Dispose()
+    {
+        CartService.OnChange -= StateHasChanged;
     }
 }

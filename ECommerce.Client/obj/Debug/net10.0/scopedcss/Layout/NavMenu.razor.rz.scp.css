@@ -65,6 +65,68 @@
     color: white;
 }
 
+.navbar[b-t8e5k6apey] {
+    box-shadow: none;
+}
+
+.brand-logo[b-t8e5k6apey] {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 1px;
+}
+
+.nav-link[b-t8e5k6apey] {
+    font-weight: 500;
+    color: #495057 !important;
+    transition: color 0.3s;
+    padding: 0.5rem 1rem !important;
+}
+
+.nav-link:hover[b-t8e5k6apey] {
+    color: #667eea !important;
+}
+
+.nav-link.active[b-t8e5k6apey] {
+    color: #667eea !important;
+    font-weight: 600;
+}
+
+.cart-badge[b-t8e5k6apey] {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.btn-primary[b-t8e5k6apey] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    font-weight: 500;
+}
+
+.btn-primary:hover[b-t8e5k6apey] {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    transform: translateY(-2px);
+    transition: all 0.3s;
+}
+
+.btn-outline-danger[b-t8e5k6apey] {
+    font-weight: 500;
+}
+
 @media (min-width: 641px) {
     .navbar-toggler[b-t8e5k6apey] {
         display: none;
@@ -79,5 +141,15 @@
         /* Allow sidebar to scroll for tall menus */
         height: calc(100vh - 3.5rem);
         overflow-y: auto;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .navbar-collapse[b-t8e5k6apey] {
+        margin-top: 1rem;
+    }
+    
+    .nav-item[b-t8e5k6apey] {
+        margin: 0.5rem 0;
     }
 }

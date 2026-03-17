@@ -1,16 +1,43 @@
 ﻿@inherits LayoutComponentBase
-<div class="page">
-    <div class="sidebar">
+
+<div class="page-container">
+    <header class="main-header">
         <NavMenu />
-    </div>
+    </header>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
+    <main class="main-content">
+        @Body
     </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="row py-4">
+                <div class="col-md-4">
+                    <h5>Om SportShop</h5>
+                    <p class="text-muted">Din destination för högkvalitativa sportkläder och träningsutrustning.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Kundtjänst</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-muted">Kontakta oss</a></li>
+                        <li><a href="#" class="text-muted">Frågor & Svar</a></li>
+                        <li><a href="#" class="text-muted">Leveransinformation</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Information</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-muted">Köpvillkor</a></li>
+                        <li><a href="#" class="text-muted">Integritetspolicy</a></li>
+                        <li><a href="#" class="text-muted">Returer</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row border-top pt-3">
+                <div class="col text-center text-muted">
+                    <small>&copy; 2024 SportShop. Alla rättigheter förbehållna.</small>
+                </div>
+            </div>
+        </div>
+    </footer>
 </div>

@@ -11,6 +11,8 @@ namespace ECommerce.Client.Services
 
         public IReadOnlyList<CartItemDto> GetCartItems() => _cart.AsReadOnly();
 
+        public int GetCartItemCount() => _cart.Sum(i => i.Quantity);
+
         public void AddToCart(ProductDto product)
         {
             var existingItem = _cart.FirstOrDefault(i => i.ProductId == product.Id);
