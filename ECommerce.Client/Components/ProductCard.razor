@@ -1,15 +1,16 @@
 @using ECommerce.Shared.DTOs
 @using ECommerce.Client.Services
 @inject CartService CartService
+@inject NavigationManager Nav
 
-<div class="card h-100 shadow-sm">
+<div class="card h-100 shadow-sm" style="cursor:pointer" @onclick="GoToDetail">
     <div class="card-body text-center">
         <h5 class="card-title">@Product.Name</h5>
         <p class="card-text text-muted">@Product.Description</p>
         <h4 class="text-primary">@Product.Price kr</h4>
     </div>
     <div class="card-footer bg-white border-top-0 text-center">
-        <button class="btn btn-outline-success w-100" @onclick="AddToCart">
+        <button class="btn btn-outline-success w-100" @onclick="AddToCart" @onclick:stopPropagation="true">
             <i class="bi bi-cart-plus"></i> Lägg i varukorg
         </button>
     </div>
@@ -19,8 +20,7 @@
     [Parameter]
     public ProductDto Product { get; set; } = default!;
 
-    private void AddToCart()
-    {
-        CartService.AddToCart(Product);
-    }
+    private void AddToCart() => CartService.AddToCart(Product);
+
+    private void GoToDetail() => Nav.NavigateTo($"/products/{Product.Id}");
 }

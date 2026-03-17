@@ -1,0 +1,33 @@
+﻿@page "/products/{Id:int}"
+@using ECommerce.Shared.DTOs
+@inject HttpClient Http
+@inject NavigationManager Nav
+
+@if (product == null)
+{
+    <p>Laddar produkt...</p>
+}
+else
+{
+    <div class="container mt-4">
+        <button class="btn btn-outline-secondary mb-3" @onclick="GoBack">← Tillbaka</button>
+        <h2>@product.Name</h2>
+        <p>@product.Description</p>
+        <h4 class="text-primary">@product.Price kr</h4>
+        <button class="btn btn-success">Lägg i kundvagn</button>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private ProductDto? product;
+
+    protected override async Task OnInitializedAsync()
+    {
+        product = await Http.GetFromJsonAsync<ProductDto>($"api/products/{Id}");
+    }
+
+    private void GoBack() => Nav.NavigateTo("/products");
+}

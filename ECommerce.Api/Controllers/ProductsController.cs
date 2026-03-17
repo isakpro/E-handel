@@ -22,6 +22,15 @@ namespace ECommerce.Api.Controllers
             return Ok(products);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var product = await _productService.GetProductByIdAsync(id);
+            if (product == null)
+                return NotFound();
+            return Ok(product);
+        }
+
         [Authorize(Roles = "Admin")] // Endast admin kan lägga till (Exempel på skyddad endpoint)
         [HttpPost]
         public IActionResult CreateProduct()

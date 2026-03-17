@@ -5,10 +5,13 @@ namespace ECommerce.Api.Repositories
     public class ProductRepository : IProductRepository
     {
         private readonly List<ProductDto> _products = new()
-        {
-            new ProductDto { Id = 1, Name = "Laptop", Price = 9999, Description = "Kraftfull laptop." },
-            new ProductDto { Id = 2, Name = "Mus", Price = 499, Description = "Trådlös mus." }
-        };
+{
+    new ProductDto { Id = 1, Name = "Fotbollsskor", Price = 899, Description = "Lätta och snabba skor för gräs och konstgräs." },
+    new ProductDto { Id = 2, Name = "Basketboll", Price = 349, Description = "Officiell storlek och vikt, passar inomhus och utomhus." },
+    new ProductDto { Id = 3, Name = "Träningströja", Price = 299, Description = "Andningsbar och snabbtorkande tröja för alla sporter." },
+    new ProductDto { Id = 4, Name = "Träningsshorts", Price = 199, Description = "Bekväma shorts med fickor, passar träning och match." },
+    new ProductDto { Id = 5, Name = "Träningsväska", Price = 449, Description = "Rymlig väska med flera fack, perfekt för gymmet." }
+};
 
         public Task<IEnumerable<ProductDto>> GetAllAsync() 
         {
