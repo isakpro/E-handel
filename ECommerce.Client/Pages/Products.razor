@@ -5,14 +5,22 @@
 
 <h3>Vårt Sortiment</h3>
 
+<div class="mb-3">
+    <input class="form-control" type="text" placeholder="Sök produkt..." @bind="searchText" @bind:event="oninput" />
+</div>
+
 @if (products == null)
 {
     <p><em>Laddar produkter...</em></p>
 }
+else if (!filteredProducts.Any())
+{
+    <p>Inga produkter hittades.</p>
+}
 else
 {
     <div class="row g-4">
-        @foreach (var product in products)
+        @foreach (var product in filteredProducts)
         {
             <div class="col-md-4 col-sm-6">
                 <ProductCard Product="product" />
@@ -23,6 +31,12 @@ else
 
 @code {
     private ProductDto[]? products;
+    private string searchText = "";
+
+    private IEnumerable<ProductDto> filteredProducts =>
+        products?.Where(p => p.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
+                             p.Description.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+        ?? Enumerable.Empty<ProductDto>();
 
     protected override async Task OnInitializedAsync()
     {
