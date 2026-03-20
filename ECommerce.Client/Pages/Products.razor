@@ -9,7 +9,14 @@
     <input class="form-control" type="text" placeholder="Sök produkt..." @bind="searchText" @bind:event="oninput" />
 </div>
 
-@if (products == null)
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger">
+        <strong>Något gick fel!</strong> @errorMessage
+        <button class="btn btn-sm btn-outline-danger ms-3" @onclick="LoadProducts">Försök igen</button>
+    </div>
+}
+else if (products == null)
 {
     <p><em>Laddar produkter...</em></p>
 }
@@ -32,6 +39,7 @@ else
 @code {
     private ProductDto[]? products;
     private string searchText = "";
+    private string? errorMessage;
 
     private IEnumerable<ProductDto> filteredProducts =>
         products?.Where(p => p.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
@@ -40,6 +48,20 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        products = await Http.GetFromJsonAsync<ProductDto[]>("api/products");
+        await LoadProducts();
+    }
+
+    private async Task LoadProducts()
+    {
+        try
+        {
+            errorMessage = null;
+            products = null;
+            products = await Http.GetFromJsonAsync<ProductDto[]>("api/products");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Kunde inte hämta produkter. Kontrollera att API:et körs.";
+        }
     }
 }
