@@ -5,15 +5,15 @@
 
 <h3>Vårt Sortiment</h3>
 
+<div class="mb-3">
+    <input class="form-control" type="text" placeholder="Sök produkt..." @bind="searchText" @bind:event="oninput" />
+</div>
+
 <EditForm Model="@filterModel" OnValidSubmit="ApplyFilter">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <div class="row g-3 mb-4">
-        <div class="col-md-4">
-            <input class="form-control" type="text" placeholder="Sök produkt..."
-                   @bind="searchText" @bind:event="oninput" />
-        </div>
         <div class="col-md-3">
             <InputNumber class="form-control" @bind-Value="filterModel.MinPrice" placeholder="Min pris (kr)" />
             <ValidationMessage For="@(() => filterModel.MinPrice)" />
