@@ -5,30 +5,49 @@
 @inject AuthenticationStateProvider AuthStateProvider
 @inject NavigationManager NavManager
 
-<h3>Logga in</h3>
+<PageTitle>Logga in</PageTitle>
 
-<EditForm Model="loginRequest" OnValidSubmit="HandleLogin">
-    <DataAnnotationsValidator />
-    
-    <div class="mb-3">
-        <label>E-post</label>
-        <InputText @bind-Value="loginRequest.Email" class="form-control" />
-        <ValidationMessage For="@(() => loginRequest.Email)" />
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h3 class="text-center mb-4">Välkommen tillbaka</h3>
+
+                    <EditForm Model="loginRequest" OnValidSubmit="HandleLogin">
+                        <DataAnnotationsValidator />
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted">E-postadress</label>
+                            <InputText @bind-Value="loginRequest.Email" class="form-control" placeholder="namn@exempel.se" />
+                            <ValidationMessage For="@(() => loginRequest.Email)" class="text-danger small" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted">Lösenord</label>
+                            <InputText @bind-Value="loginRequest.Password" type="password" class="form-control" placeholder="******" />
+                            <ValidationMessage For="@(() => loginRequest.Password)" class="text-danger small" />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-2 mt-3 shadow-sm">
+                            Logga in
+                        </button>
+                    </EditForm>
+
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <div class="alert alert-danger mt-3 mb-0 text-center">@errorMessage</div>
+                    }
+
+                    <div class="text-center mt-4 border-top pt-3">
+                        <span class="small text-muted">Har du inget konto?</span>
+                        <a href="/register" class="text-decoration-none ms-1">Skapa ett konto</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="mb-3">
-        <label>Lösenord</label>
-        <InputText @bind-Value="loginRequest.Password" type="password" class="form-control" />
-        <ValidationMessage For="@(() => loginRequest.Password)" />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Logga in</button>
-</EditForm>
-
-@if (!string.IsNullOrEmpty(errorMessage))
-{
-    <div class="alert alert-danger mt-3">@errorMessage</div>
-}
+</div>
 
 @code {
     private LoginRequest loginRequest = new();
@@ -38,17 +57,15 @@
     {
         try
         {
-            errorMessage = ""; // Nollställ gamla felmeddelanden
+            errorMessage = "";
             var response = await Http.PostAsJsonAsync("api/auth/login", loginRequest);
-            
             if (response.IsSuccessStatusCode)
             {
                 var authResult = await response.Content.ReadFromJsonAsync<AuthResponse>();
                 if (authResult != null && !string.IsNullOrEmpty(authResult.Token))
                 {
-                    // Berätta för Blazor att vi är inloggade
                     await ((CustomAuthStateProvider)AuthStateProvider).MarkUserAsAuthenticated(authResult.Token);
-                    NavManager.NavigateTo("/"); // Gå till startsidan
+                    NavManager.NavigateTo("/");
                 }
             }
             else
@@ -56,11 +73,9 @@
                 errorMessage = "Felaktig e-post eller lösenord.";
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            // Fångar upp ifall API:et är nere eller porten är fel!
-            errorMessage = "Kunde inte ansluta till servern. Är du säker på att API:et är igång? (Kolla porten i Program.cs).";
-            Console.WriteLine(ex.Message); // Loggar den tekniska detaljen till F12-konsolen
+            errorMessage = "Kunde inte ansluta till servern.";
         }
     }
 }

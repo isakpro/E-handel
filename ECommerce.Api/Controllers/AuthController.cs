@@ -13,6 +13,13 @@ namespace ECommerce.Api.Controllers
     {
         private readonly IConfiguration _config;
 
+        // Vår fejk-databas som lever så länge API:et är igång
+        private static readonly List<(string Email, string Password, string Role)> _users = new()
+        {
+            ("admin@test.com", "password123", "Admin"),
+            ("user@test.com", "password123", "User")
+        };
+
         public AuthController(IConfiguration config)
         {
             _config = config;
@@ -21,19 +28,32 @@ namespace ECommerce.Api.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
-            // Hårdkodad användare för demonstration (Här hade man normalt kollat mot en databas)
-            if (request.Email == "admin@test.com" && request.Password == "password123")
+            // Kollar om användaren finns i vår fejk-databas
+            var user = _users.FirstOrDefault(u => u.Email.Equals(request.Email, StringComparison.OrdinalIgnoreCase) 
+                                               && u.Password == request.Password);
+
+            if (user != default)
             {
-                var token = GenerateJwtToken(request.Email, "Admin");
-                return Ok(new AuthResponse { Token = token, Success = true });
-            }
-            if (request.Email == "user@test.com" && request.Password == "password123")
-            {
-                var token = GenerateJwtToken(request.Email, "User");
+                var token = GenerateJwtToken(user.Email, user.Role);
                 return Ok(new AuthResponse { Token = token, Success = true });
             }
 
             return Unauthorized("Felaktig e-post eller lösenord.");
+        }
+
+        [HttpPost("register")]
+        public IActionResult Register([FromBody] RegisterRequest request)
+        {
+            // Kolla om e-posten redan är tagen
+            if (_users.Any(u => u.Email.Equals(request.Email, StringComparison.OrdinalIgnoreCase)))
+            {
+                return BadRequest("En användare med den e-postadressen finns redan.");
+            }
+
+            // Spara den nya användaren!
+            _users.Add((request.Email, request.Password, "User"));
+
+            return Ok(new AuthResponse { Success = true });
         }
 
         private string GenerateJwtToken(string email, string role)
