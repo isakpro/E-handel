@@ -1,7 +1,7 @@
 using ECommerce.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using ECommerce.Shared.DTOs;
 namespace ECommerce.Api.Controllers
 {
     [Route("api/[controller]")]
