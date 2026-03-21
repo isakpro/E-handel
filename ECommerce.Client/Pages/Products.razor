@@ -5,14 +5,29 @@
 
 <h3>Vårt Sortiment</h3>
 
-@if (products == null)
+<div class="mb-3">
+    <input class="form-control" type="text" placeholder="Sök produkt..." @bind="searchText" @bind:event="oninput" />
+</div>
+
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger">
+        <strong>Något gick fel!</strong> @errorMessage
+        <button class="btn btn-sm btn-outline-danger ms-3" @onclick="LoadProducts">Försök igen</button>
+    </div>
+}
+else if (products == null)
 {
     <p><em>Laddar produkter...</em></p>
+}
+else if (!filteredProducts.Any())
+{
+    <p>Inga produkter hittades.</p>
 }
 else
 {
     <div class="row g-4">
-        @foreach (var product in products)
+        @foreach (var product in filteredProducts)
         {
             <div class="col-md-4 col-sm-6">
                 <ProductCard Product="product" />
@@ -23,9 +38,30 @@ else
 
 @code {
     private ProductDto[]? products;
+    private string searchText = "";
+    private string? errorMessage;
+
+    private IEnumerable<ProductDto> filteredProducts =>
+        products?.Where(p => p.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
+                             p.Description.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+        ?? Enumerable.Empty<ProductDto>();
 
     protected override async Task OnInitializedAsync()
     {
-        products = await Http.GetFromJsonAsync<ProductDto[]>("api/products");
+        await LoadProducts();
+    }
+
+    private async Task LoadProducts()
+    {
+        try
+        {
+            errorMessage = null;
+            products = null;
+            products = await Http.GetFromJsonAsync<ProductDto[]>("api/products");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Kunde inte hämta produkter. Kontrollera att API:et körs.";
+        }
     }
 }

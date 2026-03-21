@@ -1,0 +1,172 @@
+@page "/admin/products"
+@attribute [Authorize(Roles = "Admin")]
+@using ECommerce.Shared.DTOs
+@using Microsoft.AspNetCore.Authorization
+@inject HttpClient Http
+
+<h3>Hantera Produkter</h3>
+
+@if (products == null)
+{
+    <p><em>Laddar produkter...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Namn</th>
+                <th>Beskrivning</th>
+                <th>Pris</th>
+                <th>Åtgärder</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr>
+                    <td>@product.Id</td>
+                    <td>@product.Name</td>
+                    <td>@product.Description</td>
+                    <td>@product.Price kr</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning me-2" @onclick="() => StartEdit(product)">Redigera</button>
+                        <button class="btn btn-sm btn-danger" @onclick="() => DeleteProduct(product.Id)">Ta bort</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<hr />
+
+<h4>@(isEditing ? "Redigera produkt" : "Lägg till ny produkt")</h4>
+
+@if (!string.IsNullOrEmpty(statusMessage))
+{
+    <div class="alert @(isError ? "alert-danger" : "alert-success")">@statusMessage</div>
+}
+
+<EditForm Model="formModel" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label class="form-label">Namn</label>
+        <InputText class="form-control" @bind-Value="formModel.Name" />
+        <ValidationMessage For="() => formModel.Name" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Beskrivning</label>
+        <InputText class="form-control" @bind-Value="formModel.Description" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Pris (kr)</label>
+        <InputNumber class="form-control" @bind-Value="formModel.Price" />
+        <ValidationMessage For="() => formModel.Price" />
+    </div>
+
+    <button type="submit" class="btn btn-primary me-2">
+        @(isEditing ? "Spara ändringar" : "Lägg till produkt")
+    </button>
+
+    @if (isEditing)
+    {
+        <button type="button" class="btn btn-secondary" @onclick="CancelEdit">Avbryt</button>
+    }
+</EditForm>
+
+@code {
+    private List<ProductDto>? products;
+    private ProductDto formModel = new();
+    private bool isEditing = false;
+    private string statusMessage = string.Empty;
+    private bool isError = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadProducts();
+    }
+
+    private async Task LoadProducts()
+    {
+        products = await Http.GetFromJsonAsync<List<ProductDto>>("api/products");
+    }
+
+    private void StartEdit(ProductDto product)
+    {
+        formModel = new ProductDto
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Description = product.Description,
+            Price = product.Price
+        };
+        isEditing = true;
+        statusMessage = string.Empty;
+    }
+
+    private void CancelEdit()
+    {
+        formModel = new ProductDto();
+        isEditing = false;
+        statusMessage = string.Empty;
+    }
+
+    private async Task HandleSubmit()
+    {
+        if (isEditing)
+        {
+            var response = await Http.PutAsJsonAsync($"api/products/{formModel.Id}", formModel);
+            if (response.IsSuccessStatusCode)
+            {
+                statusMessage = "Produkten uppdaterades!";
+                isError = false;
+                isEditing = false;
+                formModel = new ProductDto();
+                await LoadProducts();
+            }
+            else
+            {
+                statusMessage = "Något gick fel vid uppdatering.";
+                isError = true;
+            }
+        }
+        else
+        {
+            var response = await Http.PostAsJsonAsync("api/products", formModel);
+            if (response.IsSuccessStatusCode)
+            {
+                statusMessage = "Produkten lades till!";
+                isError = false;
+                formModel = new ProductDto();
+                await LoadProducts();
+            }
+            else
+            {
+                statusMessage = "Något gick fel vid tillägg.";
+                isError = true;
+            }
+        }
+    }
+
+    private async Task DeleteProduct(int id)
+    {
+        var response = await Http.DeleteAsync($"api/products/{id}");
+        if (response.IsSuccessStatusCode)
+        {
+            statusMessage = "Produkten togs bort.";
+            isError = false;
+            await LoadProducts();
+        }
+        else
+        {
+            statusMessage = "Något gick fel vid borttagning.";
+            isError = true;
+        }
+    }
+}

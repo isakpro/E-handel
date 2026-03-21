@@ -22,11 +22,38 @@ namespace ECommerce.Api.Controllers
             return Ok(products);
         }
 
-        [Authorize(Roles = "Admin")] // Endast admin kan lägga till (Exempel på skyddad endpoint)
-        [HttpPost]
-        public IActionResult CreateProduct()
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            return Ok("Produkt skapad (Simulerad)");
+            var product = await _productService.GetProductByIdAsync(id);
+            if (product == null)
+                return NotFound();
+            return Ok(product);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> CreateProduct([FromBody] ProductDto product)
+        {
+            await _productService.AddProductAsync(product);
+            return Ok(product);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductDto product)
+        {
+            product.Id = id;
+            await _productService.UpdateProductAsync(product);
+            return NoContent();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            await _productService.DeleteProductAsync(id);
+            return NoContent();
         }
     }
 }

@@ -8,6 +8,8 @@ namespace ECommerce.Api.Services
         Task<IEnumerable<ProductDto>> GetProductsAsync();
         Task<ProductDto?> GetProductByIdAsync(int id);
         Task AddProductAsync(ProductDto product);
+        Task UpdateProductAsync(ProductDto product);
+        Task DeleteProductAsync(int id);
     }
 
     public class ProductService : IProductService
@@ -33,8 +35,18 @@ namespace ECommerce.Api.Services
         {
             if (product.Price < 0)
                 throw new ArgumentException("Priset kan inte vara negativt.");
-                
+
             await _repository.AddAsync(product);
+        }
+
+        public async Task UpdateProductAsync(ProductDto product)
+        {
+            await _repository.UpdateAsync(product);
+        }
+
+        public async Task DeleteProductAsync(int id)
+        {
+            await _repository.DeleteAsync(id);
         }
     }
 }
