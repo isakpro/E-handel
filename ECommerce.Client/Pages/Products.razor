@@ -59,7 +59,7 @@ else
             products = null;
             products = await Http.GetFromJsonAsync<ProductDto[]>("api/products");
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             errorMessage = "Kunde inte hämta produkter. Kontrollera att API:et körs.";
         }
