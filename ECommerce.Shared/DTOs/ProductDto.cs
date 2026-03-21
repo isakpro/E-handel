@@ -14,5 +14,6 @@ namespace ECommerce.Shared.DTOs
         
         [Range(0.1, 100000, ErrorMessage = "Priset måste vara över 0.")]
         public decimal Price { get; set; }
+        public string ImageUrl { get; set; } = string.Empty;
     }
 }
