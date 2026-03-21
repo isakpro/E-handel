@@ -5,9 +5,28 @@
 
 <h3>Vårt Sortiment</h3>
 
-<div class="mb-3">
-    <input class="form-control" type="text" placeholder="Sök produkt..." @bind="searchText" @bind:event="oninput" />
-</div>
+<EditForm Model="@filterModel" OnValidSubmit="ApplyFilter">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <input class="form-control" type="text" placeholder="Sök produkt..."
+                   @bind="searchText" @bind:event="oninput" />
+        </div>
+        <div class="col-md-3">
+            <InputNumber class="form-control" @bind-Value="filterModel.MinPrice" placeholder="Min pris (kr)" />
+            <ValidationMessage For="@(() => filterModel.MinPrice)" />
+        </div>
+        <div class="col-md-3">
+            <InputNumber class="form-control" @bind-Value="filterModel.MaxPrice" placeholder="Max pris (kr)" />
+            <ValidationMessage For="@(() => filterModel.MaxPrice)" />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Filtrera</button>
+        </div>
+    </div>
+</EditForm>
 
 @if (errorMessage != null)
 {
@@ -40,10 +59,16 @@ else
     private ProductDto[]? products;
     private string searchText = "";
     private string? errorMessage;
+    private PriceFilterModel filterModel = new();
+    private decimal activeMinPrice = 0;
+    private decimal activeMaxPrice = decimal.MaxValue;
 
     private IEnumerable<ProductDto> filteredProducts =>
-        products?.Where(p => p.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
-                             p.Description.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+        products?.Where(p =>
+            (p.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
+             p.Description.Contains(searchText, StringComparison.OrdinalIgnoreCase)) &&
+            p.Price >= activeMinPrice &&
+            p.Price <= activeMaxPrice)
         ?? Enumerable.Empty<ProductDto>();
 
     protected override async Task OnInitializedAsync()
@@ -63,5 +88,22 @@ else
         {
             errorMessage = "Kunde inte hämta produkter. Kontrollera att API:et körs.";
         }
+    }
+
+    private void ApplyFilter()
+    {
+        activeMinPrice = filterModel.MinPrice ?? 0;
+        activeMaxPrice = filterModel.MaxPrice ?? decimal.MaxValue;
+    }
+
+    public class PriceFilterModel
+    {
+        [System.ComponentModel.DataAnnotations.Range(0, 100000,
+            ErrorMessage = "Min pris måste vara mellan 0 och 100 000 kr")]
+        public decimal? MinPrice { get; set; }
+
+        [System.ComponentModel.DataAnnotations.Range(0, 100000,
+            ErrorMessage = "Max pris måste vara mellan 0 och 100 000 kr")]
+        public decimal? MaxPrice { get; set; }
     }
 }
