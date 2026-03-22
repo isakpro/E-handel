@@ -1,64 +1,95 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">E-handel</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+﻿<nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container">
+        <!-- Logo -->
+        <NavLink class="navbar-brand fw-bold text-primary" href="">
+            <i class="bi bi-shop text-primary me-2"></i>E-handel
+        </NavLink>
+
+        <!-- Mobile menu toggle -->
+        <button class="navbar-toggler" type="button" @onclick="ToggleNavMenu" aria-controls="navbarNav"
+                aria-expanded="@(!collapseNavMenu)" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
+        <!-- Navigation items -->
+        <div class="collapse navbar-collapse @NavMenuCssClass" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                        <i class="bi bi-house me-1"></i>Hem
+                    </NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="products">
+                        <i class="bi bi-grid me-1"></i>Produkter
+                    </NavLink>
+                </li>
+            </ul>
+
+            <!-- Right side items -->
+            <ul class="navbar-nav">
+                <!-- Cart -->
+                <li class="nav-item">
+                    <NavLink class="nav-link position-relative" href="cart">
+                        <i class="bi bi-cart3 fs-5"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            @cartItemCount
+                            <span class="visually-hidden">items in cart</span>
+                        </span>
+                    </NavLink>
+                </li>
+
+                <!-- Auth section -->
+                <AuthorizeView>
+                    <Authorized>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                <i class="bi bi-person-circle me-1"></i>Mina Sidor
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <NavLink class="dropdown-item" href="orders">
+                                        <i class="bi bi-receipt me-2"></i>Mina Ordrar
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" style="cursor: pointer;" @onclick="HandleLogout">
+                                        <i class="bi bi-box-arrow-right me-2"></i>Logga ut
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </Authorized>
+                    <NotAuthorized>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="login">
+                                <i class="bi bi-person me-1"></i>Logga in
+                            </NavLink>
+                        </li>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </ul>
+        </div>
     </div>
-</div>
-
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Hem
-            </NavLink>
-        </div>
-        
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="products">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Produkter
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="cart">
-                <span class="bi bi-cart-nav-menu" aria-hidden="true"></span> Kundvagn
-            </NavLink>
-        </div>
-
-        @* Visas enbart om användaren har en giltig JWT-token *@
-        <AuthorizeView>
-            <Authorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="orders">
-                        <span class="bi bi-receipt-nav-menu" aria-hidden="true"></span> Mina Ordrar
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">
-                    <a class="nav-link" style="cursor: pointer;" @onclick="HandleLogout">
-                        <span class="bi bi-box-arrow-right-nav-menu" aria-hidden="true"></span> Logga ut
-                    </a>
-                </div>
-            </Authorized>
-            <NotAuthorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="login">
-                        <span class="bi bi-person-nav-menu" aria-hidden="true"></span> Logga in
-                    </NavLink>
-                </div>
-            </NotAuthorized>
-        </AuthorizeView>
-
-    </nav>
-</div>
+</nav>
 
 @code {
     private bool collapseNavMenu = true;
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string? NavMenuCssClass => collapseNavMenu ? "" : "show";
+    private int cartItemCount = 0;
 
     [Inject] AuthenticationStateProvider AuthStateProvider { get; set; } = default!;
     [Inject] NavigationManager NavManager { get; set; } = default!;
+    [Inject] IJSRuntime JSRuntime { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateCartCount();
+    }
 
     private void ToggleNavMenu()
     {
@@ -67,11 +98,21 @@
 
     private async Task HandleLogout()
     {
-        // Hämtar vår CustomAuthStateProvider och anropar utloggningsmetoden
         var customProvider = (CustomAuthStateProvider)AuthStateProvider;
         await customProvider.MarkUserAsLoggedOut();
-        
-        // Skicka användaren till startsidan när de loggat ut
         NavManager.NavigateTo("/");
+    }
+
+    private async Task UpdateCartCount()
+    {
+        try
+        {
+            // Placeholder for cart count - could be enhanced to get real count from cart service
+            cartItemCount = 0;
+        }
+        catch
+        {
+            cartItemCount = 0;
+        }
     }
 }
