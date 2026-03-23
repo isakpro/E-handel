@@ -6,5 +6,6 @@ namespace ECommerce.Shared.DTOs
         public DateTime OrderDate { get; set; }
         public decimal TotalAmount { get; set; }
         public List<CartItemDto> Items { get; set; } = new();
+        public string Status { get; set; } = "Pågående";
     }
 }

@@ -10,11 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Lägg till Controllers
 builder.Services.AddControllers();
 
-// Beroendeinjektion (Dependency Injection) för våra tjänster
-// Vi använder Scoped eftersom de ska leva under ett HTTP-anrop.
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IProductService, ProductService>();
-
+// Vi använder Singleton så att produktlistan bevaras mellan requests (in-memory lagring)
+builder.Services.AddSingleton<IProductRepository, ProductRepository>();
+builder.Services.AddSingleton<IProductService, ProductService>();
 // Konfigurera JWT-Autentisering
 var jwtKey = builder.Configuration["Jwt:Key"];
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
