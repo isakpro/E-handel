@@ -94,7 +94,8 @@ else
 
     private async Task LoadProducts()
     {
-        products = await Http.GetFromJsonAsync<List<ProductDto>>("api/products");
+        products = await Http.GetFromJsonAsync<List<ProductDto>>($"api/products?t={DateTime.Now.Ticks}");
+        StateHasChanged();
     }
 
     private void StartEdit(ProductDto product)
@@ -145,6 +146,7 @@ else
                 isError = false;
                 formModel = new ProductDto();
                 await LoadProducts();
+                StateHasChanged();
             }
             else
             {

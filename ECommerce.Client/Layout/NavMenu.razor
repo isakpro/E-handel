@@ -1,17 +1,14 @@
 ﻿<nav class="navbar navbar-expand-lg navbar-light bg-white">
     <div class="container">
-        <!-- Logo -->
         <NavLink class="navbar-brand fw-bold text-primary" href="">
             <i class="bi bi-shop text-primary me-2"></i>E-handel
         </NavLink>
 
-        <!-- Mobile menu toggle -->
         <button class="navbar-toggler" type="button" @onclick="ToggleNavMenu" aria-controls="navbarNav"
                 aria-expanded="@(!collapseNavMenu)" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Navigation items -->
         <div class="collapse navbar-collapse @NavMenuCssClass" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
@@ -26,9 +23,7 @@
                 </li>
             </ul>
 
-            <!-- Right side items -->
             <ul class="navbar-nav">
-                <!-- Cart -->
                 <li class="nav-item">
                     <NavLink class="nav-link position-relative" href="cart">
                         <i class="bi bi-cart3 fs-5"></i>
@@ -39,12 +34,11 @@
                     </NavLink>
                 </li>
 
-                <!-- Auth section -->
                 <AuthorizeView>
                     <Authorized>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                   aria-expanded="false">
+                               aria-expanded="false">
                                 <i class="bi bi-person-circle me-1"></i>Mina Sidor
                             </a>
                             <ul class="dropdown-menu">
@@ -53,9 +47,7 @@
                                         <i class="bi bi-receipt me-2"></i>Mina Ordrar
                                     </NavLink>
                                 </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
+                                <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <a class="dropdown-item" style="cursor: pointer;" @onclick="HandleLogout">
                                         <i class="bi bi-box-arrow-right me-2"></i>Logga ut
@@ -63,6 +55,30 @@
                                 </li>
                             </ul>
                         </li>
+
+                        @* Backoffice - bara för Admin *@
+                        <AuthorizeView Roles="Admin">
+                            <Authorized Context="adminContext">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-warning fw-bold" href="#" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-gear me-1"></i>Backoffice
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <NavLink class="dropdown-item" href="admin/orders">
+                                                <i class="bi bi-receipt me-2"></i>Hantera Ordrar
+                                            </NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink class="dropdown-item" href="admin/products">
+                                                <i class="bi bi-list-nested me-2"></i>Hantera Produkter
+                                            </NavLink>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </Authorized>
+                        </AuthorizeView>
                     </Authorized>
                     <NotAuthorized>
                         <li class="nav-item">
@@ -107,7 +123,6 @@
     {
         try
         {
-            // Placeholder for cart count - could be enhanced to get real count from cart service
             cartItemCount = 0;
         }
         catch
