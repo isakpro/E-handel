@@ -5,6 +5,7 @@
 @inject CartService CartService
 @inject HttpClient Http
 @inject NavigationManager NavManager
+@inject AuthenticationStateProvider AuthStateProvider
 @implements IDisposable
 
 <h3>Din Kundvagn</h3>
@@ -63,7 +64,15 @@ else
             OrderDate = DateTime.Now
         };
 
-        var response = await Http.PostAsJsonAsync("api/orders", orderDto);
+        // Hämta JWT-token och lägg till den i anropet till API:et
+        var customProvider = (CustomAuthStateProvider)AuthStateProvider;
+        var token = await customProvider.GetTokenAsync();
+
+        var request = new HttpRequestMessage(HttpMethod.Post, "api/orders");
+        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        request.Content = JsonContent.Create(orderDto);
+
+        var response = await Http.SendAsync(request);
         if (response.IsSuccessStatusCode)
         {
             CartService.ClearCart();

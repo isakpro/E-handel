@@ -1,4 +1,5 @@
 @page "/admin/products"
+@* Endast inloggade användare med rollen "Admin" kan se denna sida *@
 @attribute [Authorize(Roles = "Admin")]
 @using ECommerce.Shared.DTOs
 @using Microsoft.AspNetCore.Authorization
@@ -6,12 +7,14 @@
 
 <h3>Hantera Produkter</h3>
 
+@* Visar en laddningstext medan produkterna hämtas från API:et *@
 @if (products == null)
 {
     <p><em>Laddar produkter...</em></p>
 }
 else
 {
+    @* Tabell som visar alla produkter som finns i butiken *@
     <table class="table table-striped">
         <thead>
             <tr>
@@ -31,7 +34,9 @@ else
                     <td>@product.Description</td>
                     <td>@product.Price kr</td>
                     <td>
+                        @* Redigera-knappen fyller i formuläret nedanför med produktens nuvarande data *@
                         <button class="btn btn-sm btn-warning me-2" @onclick="() => StartEdit(product)">Redigera</button>
+                        @* Ta bort-knappen skickar en DELETE-förfrågan till API:et *@
                         <button class="btn btn-sm btn-danger" @onclick="() => DeleteProduct(product.Id)">Ta bort</button>
                     </td>
                 </tr>
@@ -42,13 +47,16 @@ else
 
 <hr />
 
+@* Rubriken byter text beroende på om man redigerar eller lägger till *@
 <h4>@(isEditing ? "Redigera produkt" : "Lägg till ny produkt")</h4>
 
+@* Visar ett meddelande (grönt = lyckat, rött = fel) efter en åtgärd *@
 @if (!string.IsNullOrEmpty(statusMessage))
 {
     <div class="alert @(isError ? "alert-danger" : "alert-success")">@statusMessage</div>
 }
 
+@* Formulär med automatisk validering från ProductDto:ns Data Annotations *@
 <EditForm Model="formModel" OnValidSubmit="HandleSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
@@ -70,10 +78,12 @@ else
         <ValidationMessage For="() => formModel.Price" />
     </div>
 
+    @* Knappens text ändras beroende på om man redigerar eller skapar ny produkt *@
     <button type="submit" class="btn btn-primary me-2">
         @(isEditing ? "Spara ändringar" : "Lägg till produkt")
     </button>
 
+    @* Avbryt-knappen visas bara när man är i redigeringsläge *@
     @if (isEditing)
     {
         <button type="button" class="btn btn-secondary" @onclick="CancelEdit">Avbryt</button>
@@ -81,22 +91,30 @@ else
 </EditForm>
 
 @code {
+    // Lista med alla produkter som hämtas från API:et
     private List<ProductDto>? products;
+    // Formulärmodellen som används för både tillägg och redigering
     private ProductDto formModel = new();
+    // Håller koll på om vi är i redigeringsläge eller inte
     private bool isEditing = false;
+    // Meddelande som visas efter en lyckad eller misslyckad åtgärd
     private string statusMessage = string.Empty;
+    // Sant om senaste åtgärden misslyckades (visar rött meddelande)
     private bool isError = false;
 
+    // Körs automatiskt när sidan laddas - hämtar alla produkter
     protected override async Task OnInitializedAsync()
     {
         await LoadProducts();
     }
 
+    // Hämtar alla produkter från API:et och uppdaterar listan
     private async Task LoadProducts()
     {
         products = await Http.GetFromJsonAsync<List<ProductDto>>("api/products");
     }
 
+    // Startar redigeringsläge och kopierar produktens data till formuläret
     private void StartEdit(ProductDto product)
     {
         formModel = new ProductDto
@@ -110,6 +128,7 @@ else
         statusMessage = string.Empty;
     }
 
+    // Avbryter redigering och återställer formuläret till tomt
     private void CancelEdit()
     {
         formModel = new ProductDto();
@@ -117,10 +136,12 @@ else
         statusMessage = string.Empty;
     }
 
+    // Hanterar formulärets submit - antingen uppdatera eller skapa ny produkt
     private async Task HandleSubmit()
     {
         if (isEditing)
         {
+            // Skickar PUT-förfrågan till API:et för att uppdatera befintlig produkt
             var response = await Http.PutAsJsonAsync($"api/products/{formModel.Id}", formModel);
             if (response.IsSuccessStatusCode)
             {
@@ -138,6 +159,7 @@ else
         }
         else
         {
+            // Skickar POST-förfrågan till API:et för att lägga till ny produkt
             var response = await Http.PostAsJsonAsync("api/products", formModel);
             if (response.IsSuccessStatusCode)
             {
@@ -154,6 +176,7 @@ else
         }
     }
 
+    // Skickar DELETE-förfrågan till API:et för att ta bort en produkt
     private async Task DeleteProduct(int id)
     {
         var response = await Http.DeleteAsync($"api/products/{id}");
