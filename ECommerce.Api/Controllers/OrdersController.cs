@@ -1,4 +1,4 @@
-using ECommerce.Shared.DTOs;
+using ECommerce.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,33 +6,37 @@ namespace ECommerce.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize] // Viktigt: Hela denna controller kräver att man är inloggad!
+    [Authorize]
     public class OrdersController : ControllerBase
     {
-        // En temporär lista i minnet för att lagra ordrar (byt till databas sen)
-        private static readonly List<OrderDto> _mockDatabaseOrders = new();
+        private readonly IOrderService _orderService;
 
-        [HttpPost]
-        public IActionResult CreateOrder([FromBody] OrderDto newOrder)
+        public OrdersController(IOrderService orderService)
         {
-            if (newOrder == null || !newOrder.Items.Any())
-                return BadRequest("Ordern är tom.");
-
-            // I en riktig app hämtar du användarens ID via User.Identity
-            newOrder.OrderId = _mockDatabaseOrders.Count + 1;
-            newOrder.OrderDate = DateTime.Now;
-            
-            _mockDatabaseOrders.Add(newOrder);
-
-            return Ok(newOrder);
+            _orderService = orderService;
         }
 
         [HttpGet]
-        public IActionResult GetMyOrders()
+        public async Task<IActionResult> GetMyOrders()
         {
-            // Här skulle man normalt sett filtrera på inloggad användares ID
-            // Men för test-syfte returnerar vi alla skapade ordrar:
-            return Ok(_mockDatabaseOrders.OrderByDescending(o => o.OrderDate));
+            var orders = await _orderService.GetAllOrdersAsync();
+            return Ok(orders);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var order = await _orderService.GetOrderByIdAsync(id);
+            if (order == null)
+                return NotFound();
+            return Ok(order);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateOrder([FromBody] ECommerce.Shared.DTOs.OrderDto order)
+        {
+            await _orderService.AddOrderAsync(order);
+            return Ok("Order skapad!");
         }
     }
 }
