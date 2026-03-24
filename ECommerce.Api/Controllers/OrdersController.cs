@@ -28,6 +28,14 @@ namespace ECommerce.Api.Controllers
             return Ok(orders);
         }
 
+        [HttpPost]
+        public IActionResult CreateOrder([FromBody] OrderDto order)
+        {
+            order.OrderId = new Random().Next(100, 999);
+            order.OrderDate = DateTime.Now;
+            return Ok(order);
+        }
+
         [HttpGet("all")]
         [Authorize(Roles = "Admin")]
         public IActionResult GetAllOrders()

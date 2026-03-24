@@ -28,7 +28,12 @@ else
         </tbody>
     </table>
     
-    <h4 class="text-end">Totalsumma: @CartService.GetTotal() kr</h4>
+    <h4 class="text-center">Totalsumma: @CartService.GetTotal() kr</h4>
+
+    @if (!string.IsNullOrEmpty(successMessage))
+    {
+        <div class="alert alert-success">@successMessage</div>
+    }
 
     <AuthorizeView>
         <Authorized>
@@ -45,6 +50,8 @@ else
 }
 
 @code {
+    private string successMessage = string.Empty;
+
     protected override void OnInitialized()
     {
         CartService.OnChange += StateHasChanged; // Lyssna på ändringar i vagnen
@@ -75,8 +82,8 @@ else
         var response = await Http.SendAsync(request);
         if (response.IsSuccessStatusCode)
         {
-            CartService.ClearCart();
-            NavManager.NavigateTo("/orderhistory");
+            successMessage = "Tack för din beställning din arab";
+            StateHasChanged();
         }
     }
 }
