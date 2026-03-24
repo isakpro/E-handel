@@ -1,5 +1,4 @@
-using System.Security.Claims;
-using ECommerce.Shared.DTOs;
+using ECommerce.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,44 +9,34 @@ namespace ECommerce.Api.Controllers
     [Authorize]
     public class OrdersController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult GetMyOrders()
-        {
-            var userEmail = User.FindFirstValue(ClaimTypes.Email);
-            var orders = new List<OrderDto>();
+        private readonly IOrderService _orderService;
 
-            if (userEmail == "admin@test.com")
-            {
-                orders.Add(new OrderDto { OrderId = 101, OrderDate = DateTime.Now.AddDays(-2), TotalAmount = 1499 });
-                orders.Add(new OrderDto { OrderId = 102, OrderDate = DateTime.Now.AddDays(-10), TotalAmount = 399 });
-            }
-            else
-            {
-                orders.Add(new OrderDto { OrderId = 205, OrderDate = DateTime.Now.AddDays(-1), TotalAmount = 5499 });
-            }
+        public OrdersController(IOrderService orderService)
+        {
+            _orderService = orderService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetMyOrders()
+        {
+            var orders = await _orderService.GetAllOrdersAsync();
             return Ok(orders);
         }
 
-        [HttpPost]
-        public IActionResult CreateOrder([FromBody] OrderDto order)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            order.OrderId = new Random().Next(100, 999);
-            order.OrderDate = DateTime.Now;
+            var order = await _orderService.GetOrderByIdAsync(id);
+            if (order == null)
+                return NotFound();
             return Ok(order);
         }
 
-        [HttpGet("all")]
-        [Authorize(Roles = "Admin")]
-        public IActionResult GetAllOrders()
+        [HttpPost]
+        public async Task<IActionResult> CreateOrder([FromBody] ECommerce.Shared.DTOs.OrderDto order)
         {
-            var orders = new List<OrderDto>
-            {
-                new OrderDto { OrderId = 101, OrderDate = DateTime.Now.AddDays(-2), TotalAmount = 1499 },
-                new OrderDto { OrderId = 102, OrderDate = DateTime.Now.AddDays(-10), TotalAmount = 399 },
-                new OrderDto { OrderId = 205, OrderDate = DateTime.Now.AddDays(-1), TotalAmount = 5499 },
-                new OrderDto { OrderId = 206, OrderDate = DateTime.Now.AddDays(-3), TotalAmount = 899 }
-            };
-            return Ok(orders);
+            await _orderService.AddOrderAsync(order);
+            return Ok("Order skapad!");
         }
     }
 }

@@ -14,6 +14,9 @@ builder.Services.AddControllers();
 // Vi använder Scoped eftersom de ska leva under ett HTTP-anrop.
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>(); 
+builder.Services.AddScoped<IOrderService, OrderService>();
+
 
 // Konfigurera JWT-Autentisering
 var jwtKey = builder.Configuration["Jwt:Key"];
