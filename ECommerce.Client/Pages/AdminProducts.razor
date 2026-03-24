@@ -136,7 +136,7 @@ else
         }
         else
         {
-            var response = await Http.PostAsJsonAsync("api/products", formModel);
+            response = await Http.PostAsJsonAsync("api/products", formModel);
             if (response.IsSuccessStatusCode)
             {
                 statusMessage = "Produkten lades till!";
