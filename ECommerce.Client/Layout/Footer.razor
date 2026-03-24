@@ -1,75 +1,96 @@
-<footer class="bg-dark text-light py-5">
-  <div class="container">
-    <div class="row">
-      <!-- Brand Section -->
-      <div class="col-lg-4 col-md-6 mb-4">
-        <h5 class="fw-bold mb-3">
-          <i class="bi bi-shop text-primary me-2"></i>E-handel
-        </h5>
-        <p class="text-muted">
-          Din pålitliga partner för online-shopping. Vi erbjuder kvalitetsprodukter
-          med snabb leverans och utmärkt kundservice.
-        </p>
-        <div class="d-flex gap-2">
-          <a href="#" class="btn btn-outline-light btn-sm">
-            <i class="bi bi-facebook"></i>
-          </a>
-          <a href="#" class="btn btn-outline-light btn-sm">
-            <i class="bi bi-twitter"></i>
-          </a>
-          <a href="#" class="btn btn-outline-light btn-sm">
-            <i class="bi bi-instagram"></i>
-          </a>
+@* =====================================================================
+   FOOTER
+   Sidans sidfot, uppdelad i två delar:
+     - footer-top: fyra kolumner med varumärke, länkar och kundtjänst
+     - footer-bottom: copyright och "Made in Sweden"-text
+   ===================================================================== *@
+<footer class="sport-footer">
+
+  @* Övre delen av footern med röd toppkant (definierad i CSS) *@
+  <div class="footer-top">
+    <div class="container">
+      <div class="row py-5">
+
+        @* --- Varumärkeskolumn ---
+             Visar butiksnamn, kort beskrivning och sociala medier-ikoner.
+             Tar upp mer plats (col-lg-4) än de övriga kolumnerna. *@
+        <div class="col-lg-4 col-md-6 mb-4">
+          <h5 class="footer-brand mb-3">⚽ SPORT STORE</h5>
+          <p class="footer-desc">
+            Utrustning för vinnare. Vi levererar premiumsportutrustning
+            till idrottare på alla nivåer.
+          </p>
+          @* Sociala medier-knappar — href="#" är platshållare tills riktiga URL:er finns *@
+          <div class="d-flex gap-2 mt-3">
+            <a href="#" class="footer-social">
+              <i class="bi bi-instagram"></i>
+            </a>
+            <a href="#" class="footer-social">
+              <i class="bi bi-twitter-x"></i>
+            </a>
+            <a href="#" class="footer-social">
+              <i class="bi bi-facebook"></i>
+            </a>
+          </div>
         </div>
-      </div>
 
-      <!-- Quick Links -->
-      <div class="col-lg-2 col-md-6 mb-4">
-        <h6 class="fw-bold mb-3">Snabbnavigering</h6>
-        <ul class="list-unstyled footer-links">
-          <li><a href="/" class="text-muted text-decoration-none">Hem</a></li>
-          <li><a href="/products" class="text-muted text-decoration-none">Produkter</a></li>
-          <li><a href="/cart" class="text-muted text-decoration-none">Kundvagn</a></li>
-          <li><a href="/login" class="text-muted text-decoration-none">Logga in</a></li>
-        </ul>
-      </div>
+        @* --- Snabblänkar ---
+             Navigerar till de viktigaste sidorna i butiken. *@
+        <div class="col-lg-2 col-md-6 mb-4">
+          <h6 class="footer-heading mb-3">SHOP</h6>
+          <ul class="list-unstyled footer-links">
+            <li><a href="/" class="footer-link">Hem</a></li>
+            <li><a href="/products" class="footer-link">Produkter</a></li>
+            <li><a href="/cart" class="footer-link">Kundvagn</a></li>
+            <li><a href="/login" class="footer-link">Logga in</a></li>
+          </ul>
+        </div>
 
-      <!-- Customer Service -->
-      <div class="col-lg-3 col-md-6 mb-4">
-        <h6 class="fw-bold mb-3">Kundtjänst</h6>
-        <ul class="list-unstyled footer-links">
-          <li><a href="#" class="text-muted text-decoration-none">Om oss</a></li>
-          <li><a href="#" class="text-muted text-decoration-none">Kontakt</a></li>
-          <li><a href="#" class="text-muted text-decoration-none">FAQ</a></li>
-          <li><a href="#" class="text-muted text-decoration-none">Support</a></li>
-        </ul>
-      </div>
+        @* --- Kundtjänst ---
+             Informationssidor som Om oss, FAQ och retur.
+             href="#" är platshållare tills sidorna är skapade. *@
+        <div class="col-lg-3 col-md-6 mb-4">
+          <h6 class="footer-heading mb-3">KUNDTJÄNST</h6>
+          <ul class="list-unstyled footer-links">
+            <li><a href="#" class="footer-link">Om oss</a></li>
+            <li><a href="#" class="footer-link">Kontakt</a></li>
+            <li><a href="#" class="footer-link">FAQ</a></li>
+            <li><a href="#" class="footer-link">Returpolicy</a></li>
+          </ul>
+        </div>
 
-      <!-- Legal -->
-      <div class="col-lg-3 col-md-6 mb-4">
-        <h6 class="fw-bold mb-3">Juridiskt</h6>
-        <ul class="list-unstyled footer-links">
-          <li><a href="#" class="text-muted text-decoration-none">Köpvillkor</a></li>
-          <li><a href="#" class="text-muted text-decoration-none">Integritetspolicy</a></li>
-          <li><a href="#" class="text-muted text-decoration-none">Retur & Refund</a></li>
-          <li><a href="#" class="text-muted text-decoration-none">Cookies</a></li>
-        </ul>
-      </div>
-    </div>
+        @* --- Juridiska länkar ---
+             Köpvillkor, integritetspolicy och cookies är lagkrav (GDPR m.m.). *@
+        <div class="col-lg-3 col-md-6 mb-4">
+          <h6 class="footer-heading mb-3">JURIDISKT</h6>
+          <ul class="list-unstyled footer-links">
+            <li><a href="#" class="footer-link">Köpvillkor</a></li>
+            <li><a href="#" class="footer-link">Integritetspolicy</a></li>
+            <li><a href="#" class="footer-link">Cookies</a></li>
+          </ul>
+        </div>
 
-    <!-- Bottom row -->
-    <hr class="my-4 border-secondary">
-    <div class="row align-items-center">
-      <div class="col-md-6">
-        <small class="text-muted">
-          © @DateTime.Now.Year E-handel. All rights reserved.
-        </small>
-      </div>
-      <div class="col-md-6 text-md-end">
-        <small class="text-muted">
-          Byggd med ❤️ i Sverige
-        </small>
       </div>
     </div>
   </div>
+
+  @* --- Nedre raden ---
+       Tunn separator-linje ovanför, copyright till vänster och
+       "Made in Sweden" till höger. @DateTime.Now.Year uppdateras
+       automatiskt varje år utan att koden behöver ändras. *@
+  <div class="footer-bottom">
+    <div class="container">
+      <div class="row align-items-center py-3">
+        <div class="col-md-6">
+          <small class="footer-copy">
+            © @DateTime.Now.Year SPORT STORE. All rights reserved.
+          </small>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <small class="footer-copy">Made in Sweden 🇸🇪</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </footer>

@@ -90,12 +90,15 @@ else
     // Sant om åtgärden misslyckades
     private bool isError = false;
 
-    // Körs när sidan laddas - hämtar produkter direkt
-    protected override async Task OnInitializedAsync() => await LoadProducts();
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadProducts();
+    }
 
-    // Hämtar alla produkter från API:et
-    private async Task LoadProducts() =>
+    private async Task LoadProducts()
+    {
         products = await Http.GetFromJsonAsync<List<ProductDto>>("api/products");
+    }
 
     // Startar redigering och kopierar produktens data till formuläret
     private void StartEdit(ProductDto product)
@@ -133,15 +136,22 @@ else
         }
         else
         {
-            // Skickar POST för att lägga till ny produkt
-            response = await Http.PostAsJsonAsync("api/products", formModel);
-            SetStatus(response.IsSuccessStatusCode, "Produkten lades till!", "Något gick fel vid tillägg.");
-            if (response.IsSuccessStatusCode) formModel = new ProductDto();
+            var response = await Http.PostAsJsonAsync("api/products", formModel);
+            if (response.IsSuccessStatusCode)
+            {
+                statusMessage = "Produkten lades till!";
+                isError = false;
+                formModel = new ProductDto();
+                await LoadProducts();
+            }
+            else
+            {
+                statusMessage = "Något gick fel vid tillägg.";
+                isError = true;
+            }
         }
-        if (response.IsSuccessStatusCode) await LoadProducts();
     }
 
-    // Skickar DELETE till API:et för att ta bort en produkt
     private async Task DeleteProduct(int id)
     {
         var response = await Http.DeleteAsync($"api/products/{id}");

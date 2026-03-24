@@ -1,32 +1,112 @@
-/* Footer links styling */
-.footer-links li {
-    margin-bottom: 0.5rem;
+/* =====================================================================
+   SPORT FOOTER
+   Mörk bakgrund (#111) med vit text för att skilja sig från sidans
+   ljusa innehåll och ge ett professionellt avslut på sidan.
+   ===================================================================== */
+.sport-footer {
+    background-color: #111111;
+    color: #ffffff;
 }
 
-.footer-links a {
+/* Röd toppkant (3px) på footerns övre del — knyter ihop med
+   den röda accentfärgen som används på resten av sidan. */
+.footer-top {
+    border-top: 3px solid #e8002d;
+}
+
+/* Butiksnamnet är stor, fet och med lite letter-spacing
+   för att synas tydligt mot den mörka bakgrunden. */
+.footer-brand {
+    font-size: 1.3rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    color: #ffffff;
+}
+
+/* Beskrivningstexten under butiksnamnet är dämpad grå (#767676)
+   för att inte konkurrera med rubriken. */
+.footer-desc {
+    color: #767676;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* Kolumnrubriker (t.ex. "SHOP", "KUNDTJÄNST") är små och versaler
+   med bred letter-spacing — ett vanligt mönster i footers. */
+.footer-heading {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    color: #ffffff;
+}
+
+/* Lite luft mellan varje länk i listorna. */
+.footer-links li {
+    margin-bottom: 0.6rem;
+}
+
+/* Footerlänkar är grå som standard och blir röda vid hover
+   för att matcha sidans accentfärg. */
+.footer-link {
+    color: #767676;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
     transition: color 0.2s ease;
 }
 
-.footer-links a:hover {
-    color: var(--bs-primary) !important;
+.footer-link:hover {
+    color: #e8002d;
 }
 
-/* Social media buttons */
-.btn-outline-light {
-    border-color: #6c757d;
-    color: #6c757d;
+/* =====================================================================
+   SOCIALA MEDIER-KNAPPAR
+   Kvadratiska knappar med tunn ram. Vid hover byts ramfärg och
+   ikonfärg till rött för att matcha varumärkesfärgen.
+   ===================================================================== */
+.footer-social {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #333333; /* Subtil ram som syns mot den mörka bakgrunden */
+    color: #767676;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.2s ease;
 }
 
-.btn-outline-light:hover {
-    background-color: var(--bs-primary);
-    border-color: var(--bs-primary);
-    color: white;
+.footer-social:hover {
+    border-color: #e8002d;
+    color: #e8002d;
 }
 
-/* Responsive adjustments */
+/* =====================================================================
+   FOOTER BOTTOM
+   Tunn separator-linje ovanför copyright-raden.
+   Mörkare grå (#222) istället för svart för att synas mot #111-bakgrunden.
+   ===================================================================== */
+.footer-bottom {
+    border-top: 1px solid #222222;
+}
+
+/* Copyrighttexten är ännu mer dämpad (#555) eftersom det är
+   minst viktig information i footern. */
+.footer-copy {
+    color: #555555;
+    font-size: 0.8rem;
+}
+
+/* =====================================================================
+   RESPONSIVITET (mobil, max 767px)
+   På mobil centreras båda kolumnerna i footer-bottom eftersom de
+   annars hamnar vänsterjusterade och ser ojämnt ut.
+   !important behövs för att overrida Bootstrap:s text-md-end-klass.
+   ===================================================================== */
 @media (max-width: 767.98px) {
-    footer .col-md-6 {
+    .footer-bottom .col-md-6 {
         text-align: center !important;
-        margin-bottom: 1rem;
+        margin-bottom: 0.25rem;
     }
 }

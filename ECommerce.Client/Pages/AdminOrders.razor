@@ -1,0 +1,64 @@
+﻿@page "/admin/orders"
+@attribute [Authorize(Roles = "Admin")]
+@using Microsoft.AspNetCore.Authorization
+@using ECommerce.Shared.DTOs
+@inject HttpClient Http
+
+<h3>Hantera Ordrar</h3>
+
+@if (orders == null)
+{
+    <p>Laddar ordrar...</p>
+}
+else if (orders.Count == 0)
+{
+    <p>Inga ordrar hittades.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Ordernummer</th>
+                <th>Datum</th>
+                <th>Totalt Belopp</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in orders)
+            {
+                <tr>
+                    <td>@order.OrderId</td>
+                    <td>@order.OrderDate.ToShortDateString()</td>
+                    <td>@order.TotalAmount kr</td>
+                    <td>
+                        <select class="form-select" @onchange="(e) => ChangeStatus(order.OrderId, e.Value?.ToString())">
+                            <option value="Pågående" selected="@(order.Status == "Pågående")">Pågående</option>
+                            <option value="Skickad" selected="@(order.Status == "Skickad")">Skickad</option>
+                            <option value="Returnerad" selected="@(order.Status == "Returnerad")">Returnerad</option>
+                        </select>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<OrderDto>? orders;
+
+    protected override async Task OnInitializedAsync()
+    {
+        orders = await Http.GetFromJsonAsync<List<OrderDto>>("api/orders/all");
+    }
+
+    private void ChangeStatus(int orderId, string? newStatus)
+    {
+        var order = orders?.FirstOrDefault(o => o.OrderId == orderId);
+        if (order != null && newStatus != null)
+        {
+            order.Status = newStatus;
+        }
+    }
+}

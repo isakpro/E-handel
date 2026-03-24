@@ -8,8 +8,18 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-// Registrera HttpClient för att prata med ditt API
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5229/") });
+// Registrera AuthHandler
+builder.Services.AddScoped<JwtAuthorizationMessageHandler>();
+
+// Registrera HttpClient med JwtHandler
+builder.Services.AddHttpClient("ApiClient", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7246/");
+})
+.AddHttpMessageHandler<JwtAuthorizationMessageHandler>();
+
+builder.Services.AddScoped(sp =>
+    sp.GetRequiredService<IHttpClientFactory>().CreateClient("ApiClient"));
 
 // Autentiseringstjänster
 builder.Services.AddAuthorizationCore();
