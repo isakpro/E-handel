@@ -44,6 +44,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQcm9kdWN0Q2FyZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Gamer/source/repos/E-handel/ECommerce.Client/Pages/AdminProducts.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5Qcm9kdWN0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Gamer/source/repos/E-handel/ECommerce.Client/Pages/Cart.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FydC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -60,8 +64,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JkZXJIaXN0b3J5LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Gamer/source/repos/E-handel/ECommerce.Client/Pages/ProductDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdERldGFpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Gamer/source/repos/E-handel/ECommerce.Client/Pages/Products.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Gamer/source/repos/E-handel/ECommerce.Client/Pages/Register.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0ZXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Gamer/source/repos/E-handel/ECommerce.Client/_Imports.razor]

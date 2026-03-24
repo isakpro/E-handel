@@ -1,0 +1,90 @@
+@page "/register"
+@using ECommerce.Shared.DTOs
+@inject HttpClient Http
+
+<PageTitle>Skapa konto</PageTitle>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h3 class="text-center mb-4">Skapa nytt konto</h3>
+
+                    @if (registrationSuccess)
+                    {
+                        <div class="alert alert-success text-center">
+                            Ditt konto har skapats! <br/> <a href="/login" class="alert-link">Klicka här för att logga in</a>.
+                        </div>
+                    }
+                    else
+                    {
+                        <EditForm Model="registerRequest" OnValidSubmit="HandleRegister">
+                            <DataAnnotationsValidator />
+
+                            <div class="mb-3">
+                                <label class="form-label text-muted">E-postadress</label>
+                                <InputText @bind-Value="registerRequest.Email" class="form-control" />
+                                <ValidationMessage For="@(() => registerRequest.Email)" class="text-danger small" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label text-muted">Lösenord</label>
+                                <InputText @bind-Value="registerRequest.Password" type="password" class="form-control" placeholder="Minst 6 tecken" />
+                                <ValidationMessage For="@(() => registerRequest.Password)" class="text-danger small" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label text-muted">Bekräfta lösenord</label>
+                                <InputText @bind-Value="registerRequest.ConfirmPassword" type="password" class="form-control" />
+                                <ValidationMessage For="@(() => registerRequest.ConfirmPassword)" class="text-danger small" />
+                            </div>
+
+                            <button type="submit" class="btn btn-success w-100 py-2 mt-3 shadow-sm">
+                                Skapa konto
+                            </button>
+                        </EditForm>
+
+                        @if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            <div class="alert alert-danger mt-3 mb-0 text-center">@errorMessage</div>
+                        }
+                    }
+
+                    <div class="text-center mt-4 border-top pt-3">
+                        <span class="small text-muted">Redan medlem?</span>
+                        <a href="/login" class="text-decoration-none ms-1">Logga in här</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private RegisterRequest registerRequest = new();
+    private string errorMessage = "";
+    private bool registrationSuccess = false;
+
+    private async Task HandleRegister()
+    {
+        try
+        {
+            errorMessage = "";
+            var response = await Http.PostAsJsonAsync("api/auth/register", registerRequest);
+            
+            if (response.IsSuccessStatusCode)
+            {
+                registrationSuccess = true;
+            }
+            else
+            {
+                errorMessage = await response.Content.ReadAsStringAsync();
+            }
+        }
+        catch (Exception)
+        {
+            errorMessage = "Kunde inte ansluta till servern.";
+        }
+    }
+}

@@ -30,6 +30,12 @@ namespace ECommerce.Client.Services
             return new AuthenticationState(user);
         }
 
+        // Hämtar JWT-token från sessionStorage så den kan skickas med API-anrop
+        public async Task<string?> GetTokenAsync()
+        {
+            return await _jsRuntime.InvokeAsync<string>("sessionStorage.getItem", "jwt_token");
+        }
+
         public async Task MarkUserAsAuthenticated(string token)
         {
             await _jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "jwt_token", token);

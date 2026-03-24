@@ -1,7 +1,208 @@
-﻿@page "/"
+@page "/"
+@* Routar till startsidan "/" *@
+@using ECommerce.Shared.DTOs
+@using ECommerce.Client.Components
+@inject HttpClient Http
+@inject NavigationManager NavManager
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Sport Store</PageTitle>
 
-<h1>Helloo, world!</h1>
+@* =====================================================================
+   HERO-SEKTION
+   Stor bannerbild med rubrik och knappar som välkomnar besökaren.
+   hero-banner har en mörk gradientbakgrund (definierad i CSS).
+   hero-overlay lägger en subtil röd glöd från höger via radial-gradient.
+   ===================================================================== *@
+<section class="hero-banner">
+  <div class="hero-overlay"></div>
+  <div class="container position-relative">
+    <div class="row align-items-center min-vh-60">
+      @* Vänster kolumn: rubrik och knappar *@
+      <div class="col-lg-6">
+        <div class="hero-content">
+          <p class="hero-eyebrow">NY KOLLEKTION 2025</p>
+          <h1 class="hero-title">SPELA PÅ<br />TOPP NIVÅ</h1>
+          <p class="hero-sub">
+            Utrusta dig som ett proffs. Premiumutrustning för dig
+            som tar sporten på allvar.
+          </p>
+          <div class="d-flex gap-3 flex-wrap">
+            @* Navigerar till produktsidan via C#-metod *@
+            <button class="btn btn-sport-primary" @onclick="NavigateToProducts">
+              SHOPPA NU
+            </button>
+            @* Skickar också till produktsidan (kan byggas ut till scroll-funktion) *@
+            <button class="btn btn-sport-outline" @onclick="ScrollToFeatured">
+              SE KOLLEKTIONEN
+            </button>
+          </div>
+        </div>
+      </div>
+      @* Höger kolumn: dekorativ bild, dold på små skärmar (d-none d-lg-block) *@
+      <div class="col-lg-6 text-center d-none d-lg-block">
+        <div class="hero-image">
+          <img src="https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?w=600&h=500&fit=crop&crop=center"
+               alt="Fotbollsproffs"
+               class="img-fluid hero-img" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-Welcome to your new app.
+@* =====================================================================
+   SPORT STRIP
+   Röd informationsremsa under hero som visar tre USP:er (Unique Selling Points):
+   fri frakt, retur och säker betalning.
+   Ikonerna kommer från Bootstrap Icons (bi-*).
+   ===================================================================== *@
+<section class="sport-strip">
+  <div class="container">
+    <div class="row text-center g-0">
+      <div class="col-md-4 strip-item">
+        <i class="bi bi-truck strip-icon"></i>
+        <span class="strip-text">FRI FRAKT ÖVER 500 KR</span>
+      </div>
+      <div class="col-md-4 strip-item">
+        <i class="bi bi-arrow-return-left strip-icon"></i>
+        <span class="strip-text">30 DAGARS RETUR</span>
+      </div>
+      <div class="col-md-4 strip-item">
+        <i class="bi bi-shield-check strip-icon"></i>
+        <span class="strip-text">SÄKER BETALNING</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+@* =====================================================================
+   KATEGORI-PROMO KORT
+   Två klickbara kort som lyfter fram kategorier (Fotboll och Träning).
+   promo-card-dark = mörkt kort, promo-card-red = rött kort (CSS-klasser).
+   Båda länkar till produktsidan.
+   ===================================================================== *@
+<section class="promo-section py-5">
+  <div class="container">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="promo-card promo-card-dark">
+          <div class="promo-content">
+            <p class="promo-label">FOTBOLL</p>
+            <h3 class="promo-title">SKOR &amp;<br />UTRUSTNING</h3>
+            <a href="/products" class="btn btn-sport-white">UTFORSKA</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="promo-card promo-card-red">
+          <div class="promo-content">
+            <p class="promo-label">TRÄNING</p>
+            <h3 class="promo-title">KLÄDER &amp;<br />TILLBEHÖR</h3>
+            <a href="/products" class="btn btn-sport-white">UTFORSKA</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+@* =====================================================================
+   UTVALDA PRODUKTER
+   Hämtar produkter från API:et och visar de 4 första som produktkort.
+   Tre tillstånd hanteras:
+     1. null  → produkter laddas fortfarande (spinner visas)
+     2. tom lista → inga produkter finns
+     3. ifylld lista → produktkorten renderas via ProductCard-komponenten
+   ===================================================================== *@
+<section id="featured-products" class="py-5 bg-light-sport">
+  <div class="container">
+    <div class="mb-5">
+      <p class="section-eyebrow">BÄSTSÄLJARE</p>
+      <h2 class="section-title">POPULÄRA PRODUKTER</h2>
+    </div>
+
+    @if (featuredProducts == null)
+    {
+      @* Laddningsindikator medan API-anropet pågår *@
+      <div class="d-flex justify-content-center py-5">
+        <div class="spinner-border text-danger" role="status">
+          <span class="visually-hidden">Laddar produkter...</span>
+        </div>
+      </div>
+    }
+    else if (!featuredProducts.Any())
+    {
+      @* Fallback om API returnerar en tom lista *@
+      <div class="alert alert-secondary text-center border-0 rounded-0">
+        Inga produkter att visa för tillfället.
+      </div>
+    }
+    else
+    {
+      @* Visar max 4 produkter i ett Bootstrap-grid med 4 kolumner på desktop *@
+      <div class="row g-4">
+        @foreach (var product in featuredProducts.Take(4))
+        {
+          <div class="col-lg-3 col-md-6">
+            @* ProductCard är en återanvändbar komponent som tar emot ett ProductDto *@
+            <ProductCard Product="product" />
+          </div>
+        }
+      </div>
+
+      <div class="mt-5">
+        <a href="/products" class="btn btn-sport-primary btn-lg">
+          SE ALLA PRODUKTER
+        </a>
+      </div>
+    }
+  </div>
+</section>
+
+@code {
+  // Håller listan med utvalda produkter.
+  // null = inte laddade än, tom lista = inga produkter hittades.
+  private List<ProductDto>? featuredProducts;
+
+  // Körs automatiskt när komponenten initieras (motsvarar OnLoad).
+  protected override async Task OnInitializedAsync()
+  {
+    await LoadFeaturedProducts();
+  }
+
+  // Hämtar alla produkter från API:et och tar de 4 första.
+  // Vid fel (nätverksproblem, 4xx/5xx) sätts listan till tom så sidan inte kraschar.
+  private async Task LoadFeaturedProducts()
+  {
+    try
+    {
+      var response = await Http.GetAsync("api/products");
+      if (response.IsSuccessStatusCode)
+      {
+        var allProducts = await response.Content.ReadFromJsonAsync<List<ProductDto>>();
+        featuredProducts = allProducts?.Take(4).ToList() ?? new List<ProductDto>();
+      }
+      else
+      {
+        featuredProducts = new List<ProductDto>();
+      }
+    }
+    catch (Exception)
+    {
+      featuredProducts = new List<ProductDto>();
+    }
+  }
+
+  // Navigerar till produktsidan när "Shoppa nu"-knappen klickas.
+  private void NavigateToProducts()
+  {
+    NavManager.NavigateTo("/products");
+  }
+
+  // Navigerar till produktsidan. Kan byggas ut till att scrolla
+  // till #featured-products-sektionen med JS Interop vid behov.
+  private async Task ScrollToFeatured()
+  {
+    NavManager.NavigateTo("/products");
+  }
+}
