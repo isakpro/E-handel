@@ -1,4 +1,6 @@
-﻿<nav class="navbar navbar-expand-lg navbar-light bg-white">
+﻿@implements IDisposable
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
     <div class="container">
         <NavLink class="navbar-brand fw-bold text-primary" href="">
             <i class="bi bi-shop text-primary me-2"></i>SportGear
@@ -94,40 +96,45 @@
 </nav>
 
 @code {
+    // Styr om mobilmenyn är öppen eller stängd
     private bool collapseNavMenu = true;
-    private string? NavMenuCssClass => collapseNavMenu ? "" : "show";
-    private int cartItemCount = 0;
 
+    // Lägger till Bootstrap-klassen "show" när menyn är öppen på mobil
+    private string? NavMenuCssClass => collapseNavMenu ? "" : "show";
+
+    // Hämtar alltid aktuellt antal varor direkt från CartService (computed property)
+    private int cartItemCount => CartService.GetItemCount();
+
+    // Injicerade tjänster via Dependency Injection
     [Inject] AuthenticationStateProvider AuthStateProvider { get; set; } = default!;
     [Inject] NavigationManager NavManager { get; set; } = default!;
     [Inject] IJSRuntime JSRuntime { get; set; } = default!;
+    [Inject] CartService CartService { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync()
+    // Prenumererar på CartService.OnChange när komponenten startar.
+    // Varje gång varukorgen ändras körs StateHasChanged() → badgen uppdateras.
+    protected override void OnInitialized()
     {
-        await UpdateCartCount();
+        CartService.OnChange += StateHasChanged;
     }
 
+    // Avprenumererar när komponenten tas bort för att undvika minnesläckor
+    public void Dispose()
+    {
+        CartService.OnChange -= StateHasChanged;
+    }
+
+    // Växlar mobilmenyns synlighet
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
     }
 
+    // Loggar ut användaren och skickar tillbaka till startsidan
     private async Task HandleLogout()
     {
         var customProvider = (CustomAuthStateProvider)AuthStateProvider;
         await customProvider.MarkUserAsLoggedOut();
         NavManager.NavigateTo("/");
-    }
-
-    private async Task UpdateCartCount()
-    {
-        try
-        {
-            cartItemCount = 0;
-        }
-        catch
-        {
-            cartItemCount = 0;
-        }
     }
 }
