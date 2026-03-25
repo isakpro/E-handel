@@ -16,26 +16,26 @@
 
                     <EditForm Model="loginRequest" OnValidSubmit="HandleLogin">
                         <DataAnnotationsValidator />
-                        // E-post och lösenord är obligatoriska fält
+                        @* E-post och lösenord är obligatoriska fält *@
                         <div class="mb-3">
                             <label class="form-label text-muted">E-postadress</label>
                             <InputText @bind-Value="loginRequest.Email" class="form-control" placeholder="namn@exempel.se" />
                             <ValidationMessage For="@(() => loginRequest.Email)" class="text-danger small" />
                         </div>
-                        // Lösenordet måste vara minst 6 tecken långt
+                        @* Lösenordet måste vara minst 6 tecken långt*@
                         <div class="mb-3">
                             <label class="form-label text-muted">Lösenord</label>
                             <InputText @bind-Value="loginRequest.Password" type="password" class="form-control" placeholder="******" />
                             <ValidationMessage For="@(() => loginRequest.Password)" class="text-danger small" />
                         </div>
-                        // Inloggningsknappen är bred och har en skugga för bättre synlighet
+                        @*Inloggningsknappen är bred och har en skugga för bättre synlighet*@
                         <button type="submit" class="btn btn-primary w-100 py-2 mt-3 shadow-sm">
                             Logga in
                         </button>
-                    </EditForm> // editform används för att hantera formulärvalidering och inloggningslogik
-                    // Inputtext används för att binda användarens inmatning till loginRequest-modellen, 
-                       och ValidationMessage visar eventuella valideringsfel under varje fält.
-                    // Visar ett felmeddelande om inloggningen misslyckas
+                    </EditForm> @* editform används för att hantera formulärvalidering och inloggningslogik
+                    Inputtext används för att binda användarens inmatning till loginRequest-modellen, 
+                    och ValidationMessage visar eventuella valideringsfel under varje fält.
+                    Visar ett felmeddelande om inloggningen misslyckas (antingen på grund av ogiltiga uppgifter eller serverproblem) *@
                     @if (!string.IsNullOrEmpty(errorMessage))
                     {
                         <div class="alert alert-danger mt-3 mb-0 text-center">@errorMessage</div>
@@ -61,7 +61,7 @@
         {
             errorMessage = "";
             var response = await Http.PostAsJsonAsync("api/auth/login", loginRequest);
-            if (response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode) // Om inloggning  lyckas, hämta token från svaret och markera användaren som autentiserad
             {
                 var authResult = await response.Content.ReadFromJsonAsync<AuthResponse>();
                 if (authResult != null && !string.IsNullOrEmpty(authResult.Token))

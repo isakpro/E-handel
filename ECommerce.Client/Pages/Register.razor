@@ -4,21 +4,22 @@
 
 <PageTitle>Skapa konto</PageTitle>
 
-<div class="container mt-5"> // En centrerad layout med en kortare och mer kompakt design
+<div class="container mt-5"> @*En centrerad layout med en kortare och mer kompakt design för registreringssidan,
+                               med en kortare form och mindre vertikalt utrymme än inloggningssidan*@
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-4">
             <div class="card shadow-sm border-0">
                 <div class="card-body p-4">
                     <h3 class="text-center mb-4">Skapa nytt konto</h3>
 
-                    @if (registrationSuccess) // Visar en framgångsmeddelande när registreringen lyckas
+                    @if (registrationSuccess) @* Visar en framgångsmeddelande när registreringen lyckas *@
                     {
                         <div class="alert alert-success text-center">
                             Ditt konto har skapats! <br/> <a href="/login" class="alert-link">Klicka här för att logga in</a>.
                         </div>
                     }
                     else
-                    { // Registreringsformuläret som använder EditForm för validering
+                    { @* Registreringsformuläret som använder EditForm för validering och bindning av användarens inmatning till registerRequest-modellen *@
                         <EditForm Model="registerRequest" OnValidSubmit="HandleRegister">
                             <DataAnnotationsValidator />
 
@@ -26,6 +27,8 @@
                                 <label class="form-label text-muted">E-postadress</label>
                                 <InputText @bind-Value="registerRequest.Email" class="form-control" />
                                 <ValidationMessage For="@(() => registerRequest.Email)" class="text-danger small" />
+                                @* E-postfältet är obligatoriskt och måste vara i korrekt format, 
+                                vilket valideras av DataAnnotations i RegisterRequest-modellen*@
                             </div>
 
                             <div class="mb-3">
