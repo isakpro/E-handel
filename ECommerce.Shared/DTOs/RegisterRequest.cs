@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-
+// En enkel DTO-klass som används för att skicka registreringsdata från klienten till servern
 namespace ECommerce.Shared.DTOs
 {
     public class RegisterRequest
