@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-
+// En enkel DTO-klass som används för att skicka inloggningsdata från klienten till servern
 namespace ECommerce.Shared.DTOs
 {
     public class LoginRequest

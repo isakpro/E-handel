@@ -4,21 +4,21 @@
 
 <PageTitle>Skapa konto</PageTitle>
 
-<div class="container mt-5">
+<div class="container mt-5"> // En centrerad layout med en kortare och mer kompakt design
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-4">
             <div class="card shadow-sm border-0">
                 <div class="card-body p-4">
                     <h3 class="text-center mb-4">Skapa nytt konto</h3>
 
-                    @if (registrationSuccess)
+                    @if (registrationSuccess) // Visar en framgångsmeddelande när registreringen lyckas
                     {
                         <div class="alert alert-success text-center">
                             Ditt konto har skapats! <br/> <a href="/login" class="alert-link">Klicka här för att logga in</a>.
                         </div>
                     }
                     else
-                    {
+                    { // Registreringsformuläret som använder EditForm för validering
                         <EditForm Model="registerRequest" OnValidSubmit="HandleRegister">
                             <DataAnnotationsValidator />
 
@@ -61,7 +61,7 @@
     </div>
 </div>
 
-@code {
+@code { // Modellen som binder e-post, lösenord och bekräftelse av lösenord från formuläret samt hanterar registreringsprocessen
     private RegisterRequest registerRequest = new();
     private string errorMessage = "";
     private bool registrationSuccess = false;

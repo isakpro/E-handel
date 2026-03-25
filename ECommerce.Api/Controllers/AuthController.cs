@@ -6,14 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ECommerce.Api.Controllers
-{
-    [Route("api/[controller]")]
+{ // En enkel AuthController som hanterar inloggning och registrering av användare. Den använder en fejk-databas (en statisk lista) för att lagra användare så länge API:et är igång. 
+  // I en riktig applikation skulle du naturligtvis använda en riktig databas och hashade lösenord!
+    [Route("api/[controller]")] // API-endpointen kommer att vara /api/auth
     [ApiController]
     public class AuthController : ControllerBase
-    {
+    { // Vi behöver IConfiguration för att läsa JWT-inställningarna från appsettings.json
         private readonly IConfiguration _config;
 
-        // Vår fejk-databas som lever så länge API:et är igång
+        // En fejk-databas med några fördefinierade användare. I en riktig applikation skulle du använda en riktig databas och hashade lösenord!
         private static readonly List<(string Email, string Password, string Role)> _users = new()
         {
             ("admin@test.com", "password123", "Admin"),
@@ -57,7 +58,7 @@ namespace ECommerce.Api.Controllers
         }
 
         private string GenerateJwtToken(string email, string role)
-        {
+        { // Skapar en JWT-token med e-post och roll som claims, och signerar den med en hemlig nyckel från appsettings.json
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
