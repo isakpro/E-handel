@@ -1,9 +1,9 @@
 ﻿@implements IDisposable
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white">
+<nav class="navbar navbar-expand-lg navbar-dark sport-navbar">
     <div class="container">
-        <NavLink class="navbar-brand fw-bold text-primary" href="">
-            <i class="bi bi-shop text-primary me-2"></i>SportGear
+        <NavLink class="navbar-brand fw-bold" href="">
+            <i class="bi bi-shop me-2" style="color:#e8002d"></i>SportGear
         </NavLink>
 
         <button class="navbar-toggler" type="button" @onclick="ToggleNavMenu" aria-controls="navbarNav"
@@ -62,7 +62,7 @@
                         <AuthorizeView Roles="Admin">
                             <Authorized Context="adminContext">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-warning fw-bold" href="#" role="button"
+                                    <a class="nav-link dropdown-toggle fw-bold" href="#" role="button"
                                        data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="bi bi-gear me-1"></i>Backoffice
                                     </a>
