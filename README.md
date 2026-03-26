@@ -67,33 +67,22 @@ SportGear är en webbshop för sportkläder och utrustning. Användare kan bläd
 \## Arkitektur
 
 ```
-
 ECommerce.Api/
-
 ├── Controllers/    # HTTP-endpoints
-
 ├── Services/       # Affärslogik
-
 ├── Repositories/   # Datahämtning
-
 └── Program.cs      # Konfiguration
 
-
-
 ECommerce.Client/
-
 ├── Pages/          # Blazor-sidor
-
 ├── Components/     # Återanvändbara komponenter
-
 └── Services/       # Frontend-tjänster
 
-
-
 ECommerce.Shared/
-
 └── DTOs/           # Delade datamodeller
 
+ECommerce.Tests/
+└── ...             # Enhetstester med xUnit och Moq
 ```
 
 
