@@ -1,29 +1,77 @@
-/* Modern navbar styling */
+/* =====================================================================
+   SPORT NAVBAR
+   Mörk bakgrund (#111) med röd bottenkant — matchar sidans sporttema.
+   ===================================================================== */
+.sport-navbar {
+    background-color: #111111;
+    border-bottom: 3px solid #e8002d;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
 .navbar-brand {
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #ffffff !important;
+}
+
+.navbar-brand:hover {
+    color: #e8002d !important;
 }
 
 .navbar-brand i {
     font-size: 1.2rem;
 }
 
+/* Nav-länkar: vit text, röd hover */
 .navbar-nav .nav-link {
-    color: #495057;
-    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     padding: 0.5rem 1rem;
-    transition: all 0.3s ease;
+    transition: color 0.2s ease;
 }
 
 .navbar-nav .nav-link:hover {
-    color: var(--bs-primary);
-    background-color: rgba(13, 110, 253, 0.1);
-    border-radius: 0.375rem;
+    color: #e8002d !important;
+    background-color: transparent;
 }
 
 .navbar-nav .nav-link.active {
-    color: var(--bs-primary);
+    color: #e8002d !important;
+}
+
+/* Dropdown-meny: mörkt tema */
+.dropdown-menu {
+    background-color: #1a1a1a;
+    border: 1px solid #333333;
+    border-top: 3px solid #e8002d;
+    border-radius: 0;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
+}
+
+.dropdown-item {
+    color: rgba(255, 255, 255, 0.75);
+    padding: 0.6rem 1.2rem;
+    font-size: 0.8rem;
     font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: all 0.15s ease;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: #e8002d;
+    color: #ffffff;
+}
+
+.dropdown-divider {
+    border-color: #333333;
 }
 
 /* Cart badge */
@@ -32,72 +80,39 @@
     min-width: 1.2rem;
 }
 
-/* Dropdown styling */
-.dropdown-menu {
-    border: none;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    border-radius: 0.5rem;
+/* Hamburger-ikon på mobil */
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
-.dropdown-item {
-    padding: 0.5rem 1rem;
-    transition: all 0.2s ease;
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 2px rgba(232, 0, 45, 0.5);
 }
 
-.dropdown-item:hover {
-    background-color: rgba(13, 110, 253, 0.1);
-    color: var(--bs-primary);
-}
-
-/* Responsive navbar fixes */
+/* Mobilmeny */
 @media (max-width: 991.98px) {
     .navbar-collapse {
-        background: white;
-        border-radius: 0.375rem;
+        background-color: #1a1a1a;
+        border-top: 1px solid #333333;
         margin-top: 0.5rem;
-        padding: 1rem;
-        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        padding: 0.75rem 1rem;
     }
-    
+
     .navbar-nav .nav-link {
-        padding: 0.75rem 0;
-        border-bottom: 1px solid #f8f9fa;
+        padding: 0.65rem 0;
+        border-bottom: 1px solid #2a2a2a;
     }
-    
+
     .navbar-nav .nav-item:last-child .nav-link {
         border-bottom: none;
     }
-}
-        border-radius: 4px;
-        height: 3rem;
-        display: flex;
-        align-items: center;
-        line-height: 3rem;
-    }
 
-.nav-item ::deep a.active {
-    background-color: rgba(255,255,255,0.37);
-    color: white;
-}
-
-.nav-item ::deep a:hover {
-    background-color: rgba(255,255,255,0.1);
-    color: white;
-}
-
-@media (min-width: 641px) {
-    .navbar-toggler {
-        display: none;
-    }
-
-    .collapse {
-        /* Never collapse the sidebar for wide screens */
-        display: block;
-    }
-
-    .nav-scrollable {
-        /* Allow sidebar to scroll for tall menus */
-        height: calc(100vh - 3.5rem);
-        overflow-y: auto;
+    .dropdown-menu {
+        background-color: #222222;
+        border: none;
+        border-left: 3px solid #e8002d;
+        border-radius: 0;
+        margin-left: 0.5rem;
+        box-shadow: none;
     }
 }

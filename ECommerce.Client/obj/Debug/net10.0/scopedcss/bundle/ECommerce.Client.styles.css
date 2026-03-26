@@ -1,3 +1,116 @@
+/* /Layout/Footer.razor.rz.scp.css */
+/* =====================================================================
+   SPORT FOOTER
+   Mörk bakgrund (#111) med vit text för att skilja sig från sidans
+   ljusa innehåll och ge ett professionellt avslut på sidan.
+   ===================================================================== */
+.sport-footer[b-0zeslwv54i] {
+    background-color: #111111;
+    color: #ffffff;
+}
+
+/* Röd toppkant (3px) på footerns övre del — knyter ihop med
+   den röda accentfärgen som används på resten av sidan. */
+.footer-top[b-0zeslwv54i] {
+    border-top: 3px solid #e8002d;
+}
+
+/* Butiksnamnet är stor, fet och med lite letter-spacing
+   för att synas tydligt mot den mörka bakgrunden. */
+.footer-brand[b-0zeslwv54i] {
+    font-size: 1.3rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    color: #ffffff;
+}
+
+/* Beskrivningstexten under butiksnamnet är dämpad grå (#767676)
+   för att inte konkurrera med rubriken. */
+.footer-desc[b-0zeslwv54i] {
+    color: #767676;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* Kolumnrubriker (t.ex. "SHOP", "KUNDTJÄNST") är små och versaler
+   med bred letter-spacing — ett vanligt mönster i footers. */
+.footer-heading[b-0zeslwv54i] {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    color: #ffffff;
+}
+
+/* Lite luft mellan varje länk i listorna. */
+.footer-links li[b-0zeslwv54i] {
+    margin-bottom: 0.6rem;
+}
+
+/* Footerlänkar är grå som standard och blir röda vid hover
+   för att matcha sidans accentfärg. */
+.footer-link[b-0zeslwv54i] {
+    color: #767676;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.footer-link:hover[b-0zeslwv54i] {
+    color: #e8002d;
+}
+
+/* =====================================================================
+   SOCIALA MEDIER-KNAPPAR
+   Kvadratiska knappar med tunn ram. Vid hover byts ramfärg och
+   ikonfärg till rött för att matcha varumärkesfärgen.
+   ===================================================================== */
+.footer-social[b-0zeslwv54i] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #333333; /* Subtil ram som syns mot den mörka bakgrunden */
+    color: #767676;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.footer-social:hover[b-0zeslwv54i] {
+    border-color: #e8002d;
+    color: #e8002d;
+}
+
+/* =====================================================================
+   FOOTER BOTTOM
+   Tunn separator-linje ovanför copyright-raden.
+   Mörkare grå (#222) istället för svart för att synas mot #111-bakgrunden.
+   ===================================================================== */
+.footer-bottom[b-0zeslwv54i] {
+    border-top: 1px solid #222222;
+}
+
+/* Copyrighttexten är ännu mer dämpad (#555) eftersom det är
+   minst viktig information i footern. */
+.footer-copy[b-0zeslwv54i] {
+    color: #555555;
+    font-size: 0.8rem;
+}
+
+/* =====================================================================
+   RESPONSIVITET (mobil, max 767px)
+   På mobil centreras båda kolumnerna i footer-bottom eftersom de
+   annars hamnar vänsterjusterade och ser ojämnt ut.
+   !important behövs för att overrida Bootstrap:s text-md-end-klass.
+   ===================================================================== */
+@media (max-width: 767.98px) {
+    .footer-bottom .col-md-6[b-0zeslwv54i] {
+        text-align: center !important;
+        margin-bottom: 0.25rem;
+    }
+}
 /* /Layout/MainLayout.razor.rz.scp.css */
 .page[b-ozipo0nu47] {
     position: relative;
@@ -158,5 +271,314 @@ main[b-ozipo0nu47] {
         /* Allow sidebar to scroll for tall menus */
         height: calc(100vh - 3.5rem);
         overflow-y: auto;
+    }
+}
+/* /Pages/Home.razor.rz.scp.css */
+/* =====================================================================
+   HERO BANNER
+   Bakgrunden är en mörk gradient från nästan svart (#111) till en
+   mörkröd ton (#2d0a0a) för att ge en sportig, energifylld känsla.
+   ===================================================================== */
+.hero-banner[b-99h2ih1tj7] {
+    position: relative;
+    background: linear-gradient(135deg, #111111 0%, #1a1a1a 60%, #2d0a0a 100%);
+    padding: 5rem 0;
+    overflow: hidden;
+}
+
+/* Lägger ett halvtransparent rött sken från höger sida via radial-gradient.
+   pointer-events: none gör att det inte blockerar klick på innehållet under. */
+.hero-overlay[b-99h2ih1tj7] {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at right center, rgba(232,0,45,0.15) 0%, transparent 65%);
+    pointer-events: none;
+}
+
+/* Ger hero-raden en minsta höjd på 60% av viewportens höjd
+   så bannern alltid tar upp rejält med skärmutrymme. */
+.min-vh-60[b-99h2ih1tj7] {
+    min-height: 60vh;
+}
+
+/* Textinnehållet i hero lyfts ovanpå overlay-lagret med z-index. */
+.hero-content[b-99h2ih1tj7] {
+    color: #fff;
+    position: relative;
+    z-index: 1;
+}
+
+/* Liten röd text ovanför huvudrubriken ("NY KOLLEKTION 2025").
+   Bred letter-spacing ger ett professionellt, sportigt intryck. */
+.hero-eyebrow[b-99h2ih1tj7] {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: #e8002d;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+/* Stor fet rubrik. clamp() gör att fontstorleken skalas flytande
+   mellan 3rem (mobil) och 5.5rem (desktop) baserat på viewportbredden. */
+.hero-title[b-99h2ih1tj7] {
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+}
+
+/* Brödtext under rubriken, begränsad bredd för läsbarhet. */
+.hero-sub[b-99h2ih1tj7] {
+    font-size: 1rem;
+    color: #aaaaaa;
+    max-width: 420px;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+}
+
+/* Hero-bilden till höger. drop-shadow ger ett djupintryck mot den mörka bakgrunden. */
+.hero-img[b-99h2ih1tj7] {
+    max-height: 520px;
+    object-fit: cover;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));
+}
+
+/* =====================================================================
+   SPORT-KNAPPAR
+   Tre varianter: primär (röd fylld), outline (vit ram) och vit (för
+   mörka bakgrunder). Alla är kantiga (border-radius: 0) och versaler
+   för att matcha sportig stil.
+   ===================================================================== */
+
+/* Röd fylld knapp — används för huvudåtgärden "Shoppa nu". */
+.btn-sport-primary[b-99h2ih1tj7] {
+    background-color: #e8002d;
+    color: #ffffff;
+    border: 2px solid #e8002d;
+    border-radius: 0;
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.85rem 2rem;
+    transition: all 0.2s ease;
+}
+
+.btn-sport-primary:hover[b-99h2ih1tj7] {
+    background-color: #c90026;
+    border-color: #c9002626;
+    color: #ffffff;
+}
+
+/* Transparent knapp med vit ram — sekundär åtgärd på mörk bakgrund. */
+.btn-sport-outline[b-99h2ih1tj7] {
+    background-color: transparent;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    border-radius: 0;
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.85rem 2rem;
+    transition: all 0.2s ease;
+}
+
+.btn-sport-outline:hover[b-99h2ih1tj7] {
+    background-color: #ffffff;
+    color: #111111;
+}
+
+/* Vit fylld knapp — används ovanpå promo-korten som har mörk/röd bakgrund. */
+.btn-sport-white[b-99h2ih1tj7] {
+    background-color: #ffffff;
+    color: #111111;
+    border: 2px solid #ffffff;
+    border-radius: 0;
+    font-weight: 800;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.7rem 1.6rem;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-sport-white:hover[b-99h2ih1tj7] {
+    background-color: transparent;
+    color: #ffffff;
+}
+
+/* =====================================================================
+   SPORT STRIP
+   Röd remsa direkt under hero som visar tre fördelar (USP:er).
+   Varje post separeras med en halvtransparent vertikal linje.
+   ===================================================================== */
+.sport-strip[b-99h2ih1tj7] {
+    background-color: #e8002d;
+    padding: 0.9rem 0;
+}
+
+/* Varje USP-post centreras och läggs i en rad med ikon + text. */
+.strip-item[b-99h2ih1tj7] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.4rem 1rem;
+    border-right: 1px solid rgba(255,255,255,0.3); /* Separatorlinje */
+}
+
+/* Sista posten ska inte ha en linje till höger. */
+.strip-item:last-child[b-99h2ih1tj7] {
+    border-right: none;
+}
+
+.strip-icon[b-99h2ih1tj7] {
+    color: #ffffff;
+    font-size: 1.1rem;
+}
+
+.strip-text[b-99h2ih1tj7] {
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* =====================================================================
+   PROMO-KORT
+   Två stora klickbara kort för kategorierna Fotboll och Träning.
+   Texten är positionerad längst ner (align-items: flex-end).
+   Hover ger en lätt zoom-effekt via scale().
+   ===================================================================== */
+.promo-section[b-99h2ih1tj7] {
+    background-color: #ffffff;
+}
+
+.promo-card[b-99h2ih1tj7] {
+    min-height: 320px;
+    display: flex;
+    align-items: flex-end; /* Textinnehållet hamnar längst ner i kortet */
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.promo-card:hover[b-99h2ih1tj7] {
+    transform: scale(1.02); /* Subtil zoom vid hover */
+}
+
+/* Mörk gradient — används för Fotboll-kortet. */
+.promo-card-dark[b-99h2ih1tj7] {
+    background: linear-gradient(135deg, #111111 0%, #222222 100%);
+}
+
+/* Röd gradient — används för Träning-kortet. */
+.promo-card-red[b-99h2ih1tj7] {
+    background: linear-gradient(135deg, #e8002d 0%, #9c0020 100%);
+}
+
+/* z-index säkerställer att texten hamnar ovanpå eventuella overlay-lager. */
+.promo-content[b-99h2ih1tj7] {
+    position: relative;
+    z-index: 1;
+}
+
+/* Liten etikett ovanför kortets rubrik, t.ex. "FOTBOLL". */
+.promo-label[b-99h2ih1tj7] {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+}
+
+/* Stor rubrik på promo-kortet. */
+.promo-title[b-99h2ih1tj7] {
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+}
+
+/* =====================================================================
+   UTVALDA PRODUKTER
+   Ljusgrå bakgrund för att skilja sektionen från de vita promo-korten.
+   Rubrikstilar matchar resten av sidans sportiga typografi.
+   ===================================================================== */
+.bg-light-sport[b-99h2ih1tj7] {
+    background-color: #f5f5f5;
+}
+
+/* Liten röd text ovanför sektionsrubriken ("BÄSTSÄLJARE"). */
+.section-eyebrow[b-99h2ih1tj7] {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    color: #e8002d;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+}
+
+/* Stor svart sektionsrubrik. */
+.section-title[b-99h2ih1tj7] {
+    font-size: 2.2rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #111111;
+    letter-spacing: -0.01em;
+}
+
+/* =====================================================================
+   RESPONSIVITET (mobil, max 768px)
+   Anpassar padding, fontstorlekar och layout för mindre skärmar.
+   ===================================================================== */
+@media (max-width: 768px) {
+    .hero-banner[b-99h2ih1tj7] {
+        padding: 3rem 0; /* Mindre padding på mobil */
+    }
+
+    .hero-title[b-99h2ih1tj7] {
+        font-size: 3rem; /* Skalas ner när clamp() når sin nedre gräns */
+    }
+
+    .hero-sub[b-99h2ih1tj7] {
+        font-size: 0.9rem;
+    }
+
+    /* Knapparna tar full bredd på mobil för enkel klickbarhet. */
+    .btn-sport-primary[b-99h2ih1tj7],
+    .btn-sport-outline[b-99h2ih1tj7] {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Vertikala separatorlinjer ersätts med horisontella på mobil
+       eftersom posterna staplas istället för att ligga i rad. */
+    .strip-item[b-99h2ih1tj7] {
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.3);
+        padding: 0.6rem;
+    }
+
+    .promo-card[b-99h2ih1tj7] {
+        min-height: 220px; /* Kortare kort på mobil */
+    }
+
+    .promo-title[b-99h2ih1tj7] {
+        font-size: 1.5rem;
     }
 }
