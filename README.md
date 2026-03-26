@@ -97,6 +97,16 @@ ECommerce.Shared/
 ```
 
 
+## Enhetstester
+Projektet har 10+ enhetstester skrivna med xUnit och Moq.
+Testerna finns i `ECommerce.Tests`-projektet och testar främst service-lagret.
+
+Kör testerna med:
+```
+dotnet test
+```
+
+
 
 \## Funktionalitet
 
