@@ -109,7 +109,7 @@
     [Inject] AuthenticationStateProvider AuthStateProvider { get; set; } = default!;
     [Inject] NavigationManager NavManager { get; set; } = default!;
     [Inject] IJSRuntime JSRuntime { get; set; } = default!;
-    [Inject] CartService CartService { get; set; } = default!;
+    [Inject] ICartService CartService { get; set; } = default!;
 
     // Prenumererar på CartService.OnChange när komponenten startar.
     // Varje gång varukorgen ändras körs StateHasChanged() → badgen uppdateras.
