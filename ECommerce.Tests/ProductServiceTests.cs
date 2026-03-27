@@ -1,4 +1,4 @@
-using ECommerce.Api.Services;
+﻿using ECommerce.Api.Services;
 using ECommerce.Api.Repositories;
 using ECommerce.Shared.DTOs;
 using Moq;
@@ -17,120 +17,98 @@ namespace ECommerce.Tests
             _service = new ProductService(_mockRepo.Object);
         }
 
-        // Testar att GetProductByIdAsync returnerar rätt produkt när ett giltigt id skickas in.
         [Fact]
-        public async Task GetProductByIdAsync_ExistingId_ReturnsProduct()
+        public void GetProduct_ExistingId_ReturnsProduct()
         {
-            // Arrange
+            // 1. Arrange
             var expectedProduct = new ProductDto { Id = 1, Name = "Test", Price = 100 };
-            _mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(expectedProduct);
+            _mockRepo.Setup(r => r.GetById(1)).Returns(expectedProduct);
 
-            // Act
-            var result = await _service.GetProductByIdAsync(1);
+            // 2. Act
+            var result = _service.GetProductById(1);
 
-            // Assert
+            // 3. Assert
             Assert.NotNull(result);
             Assert.Equal("Test", result.Name);
         }
 
-        // Testar att GetProductByIdAsync returnerar null när produkten inte finns.
         [Fact]
-        public async Task GetProductByIdAsync_NonExistingId_ReturnsNull()
+        public void GetProduct_NonExistingId_ReturnsNull()
         {
-            _mockRepo.Setup(r => r.GetByIdAsync(99)).ReturnsAsync((ProductDto?)null);
-
-            var result = await _service.GetProductByIdAsync(99);
-
+            _mockRepo.Setup(r => r.GetById(99)).Returns((ProductDto)null);
+            var result = _service.GetProductById(99);
             Assert.Null(result);
         }
 
-        // Testar att AddProductAsync anropar repository exakt en gång när en giltig produkt läggs till.
         [Fact]
-        public async Task AddProductAsync_ValidProduct_CallsRepository()
+        public void AddProduct_ValidProduct_CallsRepository()
         {
             var product = new ProductDto { Name = "Ny", Price = 100 };
-
-            await _service.AddProductAsync(product);
-
-            _mockRepo.Verify(r => r.AddAsync(It.IsAny<ProductDto>()), Times.Once);
+            _service.AddProduct(product);
+            _mockRepo.Verify(r => r.Add(It.IsAny<ProductDto>()), Times.Once);
         }
 
-        // Testar att AddProductAsync kastar ArgumentException när priset är negativt.
         [Fact]
-        public async Task AddProductAsync_NegativePrice_ThrowsArgumentException()
+        public void AddProduct_NegativePrice_ThrowsArgumentException()
         {
             var product = new ProductDto { Name = "Ogiltig", Price = -10 };
-
-            await Assert.ThrowsAsync<ArgumentException>(() => _service.AddProductAsync(product));
+            Assert.Throws<ArgumentException>(() => _service.AddProduct(product));
         }
 
-        // Testar att GetProductsAsync returnerar alla produkter från repository.
         [Fact]
-        public async Task GetProductsAsync_ReturnsList()
+        public void GetAllProducts_ReturnsList()
         {
-            var products = new List<ProductDto>
-            {
-                new ProductDto { Id = 1 }, new ProductDto { Id = 2 }
+            var products = new List<ProductDto> 
+            { 
+                new ProductDto { Id = 1 }, new ProductDto { Id = 2 } 
             };
-            _mockRepo.Setup(r => r.GetAllAsync()).ReturnsAsync(products);
+            _mockRepo.Setup(r => r.GetAll()).Returns(products);
 
-            var result = await _service.GetProductsAsync();
+            var result = _service.GetAllProducts();
 
             Assert.Equal(2, result.Count());
         }
 
-        // Testar att UpdateProductAsync anropar repository med rätt produkt.
         [Fact]
-        public async Task UpdateProductAsync_ValidProduct_CallsRepository()
+        public void UpdateProduct_ExistingProduct_UpdatesCorrectly()
         {
-            var product = new ProductDto { Id = 1, Name = "Uppdaterad", Price = 50 };
+            var product = new ProductDto { Id = 1, Name = "Uppdaterad" };
+            _mockRepo.Setup(r => r.GetById(1)).Returns(new ProductDto { Id = 1 });
 
-            await _service.UpdateProductAsync(product);
+            _service.UpdateProduct(product);
 
-            _mockRepo.Verify(r => r.UpdateAsync(product), Times.Once);
+            _mockRepo.Verify(r => r.Update(product), Times.Once);
         }
 
-        // Testar att DeleteProductAsync anropar repository med rätt id.
         [Fact]
-        public async Task DeleteProductAsync_ValidId_CallsRepository()
+        public void UpdateProduct_NonExistingProduct_ThrowsException()
         {
-            await _service.DeleteProductAsync(1);
+            var product = new ProductDto { Id = 1, Name = "Uppdaterad" };
+            _mockRepo.Setup(r => r.GetById(1)).Returns((ProductDto)null);
 
-            _mockRepo.Verify(r => r.DeleteAsync(1), Times.Once);
+            Assert.Throws<KeyNotFoundException>(() => _service.UpdateProduct(product));
         }
 
-        // Testar att GetProductByIdAsync bara anropar repository en gång per anrop.
         [Fact]
-        public async Task GetProductByIdAsync_CallsRepositoryOnce()
+        public void DeleteProduct_ExistingProduct_CallsDelete()
         {
-            _mockRepo.Setup(r => r.GetByIdAsync(5)).ReturnsAsync(new ProductDto { Id = 5 });
-
-            await _service.GetProductByIdAsync(5);
-
-            _mockRepo.Verify(r => r.GetByIdAsync(5), Times.Once);
+            _mockRepo.Setup(r => r.GetById(1)).Returns(new ProductDto { Id = 1 });
+            _service.DeleteProduct(1);
+            _mockRepo.Verify(r => r.Delete(1), Times.Once);
         }
 
-        // Testar att GetProductsAsync returnerar en tom lista när inga produkter finns i repository.
         [Fact]
-        public async Task GetProductsAsync_EmptyList_ReturnsEmpty()
+        public void DeleteProduct_NonExistingProduct_ThrowsException()
         {
-            _mockRepo.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<ProductDto>());
-
-            var result = await _service.GetProductsAsync();
-
-            Assert.Empty(result);
+            _mockRepo.Setup(r => r.GetById(1)).Returns((ProductDto)null);
+            Assert.Throws<KeyNotFoundException>(() => _service.DeleteProduct(1));
         }
 
-        // Testar att AddProductAsync inte kastar något undantag när en giltig produkt med korrekt pris skickas in.
         [Fact]
-        public async Task AddProductAsync_ValidProduct_DoesNotThrow()
+        public void AddProduct_MissingName_ThrowsArgumentException()
         {
-            var product = new ProductDto { Name = "Giltig", Price = 199 };
-            _mockRepo.Setup(r => r.AddAsync(It.IsAny<ProductDto>())).Returns(Task.CompletedTask);
-
-            var exception = await Record.ExceptionAsync(() => _service.AddProductAsync(product));
-
-            Assert.Null(exception);
+            var product = new ProductDto { Name = "", Price = 100 };
+            Assert.Throws<ArgumentException>(() => _service.AddProduct(product));
         }
     }
 }

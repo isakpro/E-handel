@@ -14,7 +14,7 @@ builder.Services.AddScoped<JwtAuthorizationMessageHandler>();
 // Registrera HttpClient med JwtHandler
 builder.Services.AddHttpClient("ApiClient", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7246/");
+    client.BaseAddress = new Uri("http://localhost:5229/");
 })
 .AddHttpMessageHandler<JwtAuthorizationMessageHandler>();
 
