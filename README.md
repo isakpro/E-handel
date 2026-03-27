@@ -58,9 +58,9 @@ SportGear är en webbshop för sportkläder och utrustning. Användare kan bläd
 
 \### Demo-inloggning
 
-\- \*\*Email:\*\* admin@sport.se
+\- \*\*Email:\*\* admin@test.com
 
-\- \*\*Lösenord:\*\* Admin123!
+\- \*\*Lösenord:\*\* password123
 
 
 
