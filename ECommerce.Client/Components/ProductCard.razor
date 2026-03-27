@@ -1,6 +1,6 @@
 @using ECommerce.Shared.DTOs
 @using ECommerce.Client.Services
-@inject CartService CartService
+@inject ICartService CartService
 @inject NavigationManager Nav
 
 <div class="card h-100 shadow-sm product-card" style="cursor:pointer" @onclick="GoToDetail">

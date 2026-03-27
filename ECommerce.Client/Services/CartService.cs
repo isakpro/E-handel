@@ -2,7 +2,17 @@ using ECommerce.Shared.DTOs;
 
 namespace ECommerce.Client.Services
 {
-    public class CartService
+    public interface ICartService
+    {
+        event Action? OnChange;
+        IReadOnlyList<CartItemDto> GetCartItems();
+        void AddToCart(ProductDto product);
+        void ClearCart();
+        int GetItemCount();
+        decimal GetTotal();
+    }
+
+    public class CartService : ICartService
     {
         // Den interna listan med varor i kundvagnen
         private readonly List<CartItemDto> _cart = new();

@@ -24,6 +24,6 @@ builder.Services.AddScoped(sp =>
 // Autentiseringstjänster
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
-builder.Services.AddScoped<CartService>();
+builder.Services.AddScoped<ICartService, CartService>();
 
 await builder.Build().RunAsync();
