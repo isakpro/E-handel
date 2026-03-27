@@ -127,5 +127,5 @@ dotnet test
 
 | Ihab | Kundvagn, checkout |
 
-| Thanos | Tester, dokumentation |
+| Thanos | Tester, Bakcoffice, dokumentation |
 
