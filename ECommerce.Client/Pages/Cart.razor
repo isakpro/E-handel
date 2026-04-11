@@ -18,7 +18,12 @@ else
 {
     <table class="table">
         <thead>
-            <tr><th>Produkt</th><th>Pris</th><th>Antal</th><th>Totalt</th></tr>
+            <tr>
+                <th>Produkt</th>
+                <th>Pris</th>
+                <th>Antal</th>
+                <th>Totalt</th>
+            </tr>
         </thead>
         <tbody>
             @foreach (var item in CartService.GetCartItems())
@@ -82,7 +87,7 @@ else
         var response = await Http.SendAsync(request);
         if (response.IsSuccessStatusCode)
         {
-            successMessage = "Tack för din beställning din arab";
+            successMessage = "Tack för din beställning och välkommen åter!  ";
             StateHasChanged();
         }
     }
